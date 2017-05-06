@@ -1,6 +1,18 @@
-'use strict';
+
+const uuid = require('uuid/v4');
+const AWS = require('aws-sdk');
+
+var dynamodb = new AWS.DynamoDB();
 
 module.exports.create = (event, context, callback) => {
+  dynamodb.putItem({
+    Item: {
+      "id": { "S": uuid() },
+      "handles": { "" }
+    }
+  })
+
+
   const response = {
     statusCode: 200,
     headers: {

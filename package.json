@@ -1,0 +1,22 @@
+{
+  "name": "tweetsheets-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sheets.js",
+  "devDependencies": {
+    "uuid": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coreyferguson/tweetsheets-api.git"
+  },
+  "author": "Corey Ferguson <corey.t.ferguson@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coreyferguson/tweetsheets-api/issues"
+  },
+  "homepage": "https://github.com/coreyferguson/tweetsheets-api#readme",
+  "dependencies": {
+    "serverless-dynamodb-local": "^0.2.21"
+  }
+}

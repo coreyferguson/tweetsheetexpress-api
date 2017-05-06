@@ -1,10 +1,19 @@
 
-service: tweetsheetexpress-api
+service: tweetsheets-api
+
+plugins:
+  - serverless-dynamodb-local
 
 provider:
   name: aws
   region: us-west-2
   runtime: nodejs6.10
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:us-west-2:*:*"
 
 functions:
   create:
@@ -14,3 +23,19 @@ functions:
           method: POST
           path: sheets
           cors: true
+
+resources:
+  Resources:
+    sheetsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: sheets
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
