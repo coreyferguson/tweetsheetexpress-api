@@ -5,24 +5,34 @@ const AWS = require('aws-sdk');
 var dynamodb = new AWS.DynamoDB();
 
 module.exports.create = (event, context, callback) => {
-  dynamodb.putItem({
-    Item: {
-      "id": { "S": uuid() },
-      "handles": { "" }
-    }
-  })
 
+  const payload = JSON.parse(event.body);
+  console.log('payload:', payload);
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin" : "*",
-      "Access-Control-Allow-Credentials" : true
-    },
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event
-    }),
+  const id = { "S": uuid() };
+  const handles = {
+    "L": payload.handles.map(value => {
+      return { "S": value };
+    })
   };
-  callback(null, response);
+  const tweet = { "S": payload.tweet };
+
+  dynamodb.putItem({
+    TableName: "sheets",
+    Item: { id, handles, tweet }
+  }, (error, data) => {
+    if (error) callback(error);
+    else {
+      console.log(`successfully created item: ${id.S}`);
+      callback(null, {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin" : "*",
+          "Access-Control-Allow-Credentials" : true
+        },
+        body: JSON.stringify({ id: id.S })
+      });
+    }
+  });
+
 };
