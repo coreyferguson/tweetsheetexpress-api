@@ -1,10 +1,16 @@
 
-service: api
+service: tweetsheetexpress-api
 
 provider:
   name: aws
+  region: us-west-2
   runtime: nodejs6.10
 
 functions:
-  hello:
-    handler: handler.hello
+  create:
+    handler: sheets.create
+    events:
+      - http:
+          method: POST
+          path: sheets
+          cors: true
