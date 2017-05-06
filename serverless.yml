@@ -23,6 +23,13 @@ functions:
           method: POST
           path: sheets
           cors: true
+  fetch:
+    handler: sheets.fetch
+    events:
+      - http:
+          method: GET
+          path: sheets
+          cors: true
 
 resources:
   Resources:
