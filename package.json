@@ -1,6 +1,6 @@
 {
   "name": "tweetsheets-api",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "sheets.js",
   "devDependencies": {
