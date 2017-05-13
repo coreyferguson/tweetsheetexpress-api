@@ -4,10 +4,17 @@ service: tweetsheets-api
 plugins:
   - serverless-dynamodb-local
 
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  sheetsTableName: sheets-${self:custom.stage}
+
 provider:
   name: aws
+  stage: dev
   region: us-west-2
   runtime: nodejs6.10
+  environment:
+    sheetsTableName: ${self:custom.sheetsTableName}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -36,7 +43,7 @@ resources:
     sheetsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: sheets
+        TableName: ${self:custom.sheetsTableName}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

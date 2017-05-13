@@ -12,16 +12,16 @@ module.exports.create = (event, context, callback) => {
   const payload = JSON.parse(event.body);
   console.log('payload:', payload);
 
-  const id = { "S": uuid() };
+  const id = { 'S': uuid() };
   const handles = {
-    "L": payload.handles.map(value => {
-      return { "S": value };
+    'L': payload.handles.map(value => {
+      return { 'S': value };
     })
   };
-  const tweet = { "S": payload.tweet };
+  const tweet = { 'S': payload.tweet };
 
   dynamodb.putItem({
-    TableName: "sheets",
+    TableName: process.env.sheetsTableName,
     Item: { id, handles, tweet }
   }, (error, data) => {
     if (error) {
@@ -32,8 +32,8 @@ module.exports.create = (event, context, callback) => {
       callback(null, {
         statusCode: 200,
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true
         },
         body: JSON.stringify({ id: id.S })
       });
@@ -46,10 +46,9 @@ module.exports.create = (event, context, callback) => {
  * Fetch existing tweetsheet
  */
 module.exports.fetch = (event, context, callback) => {
-
   const id = event.queryStringParameters.id;
   dynamodb.getItem({
-    TableName: 'sheets',
+    TableName: process.env.sheetsTableName,
     Key: {
       'id': { 'S': id }
     }
@@ -68,8 +67,8 @@ module.exports.fetch = (event, context, callback) => {
       callback(null, {
         statusCode: 200,
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true
         },
         body: JSON.stringify(sheet)
       });
