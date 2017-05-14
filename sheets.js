@@ -14,6 +14,8 @@ module.exports.create = (event, context, callback) => {
   console.log('payload:', payload);
 
   const id = { S: uuid() };
+  const title = { S: payload.title };
+  const description = { S: payload.description };
   const handles = {
     L: payload.handles.map(value => {
       return { S: value };
@@ -23,7 +25,7 @@ module.exports.create = (event, context, callback) => {
 
   dynamodb.putItem({
     TableName: process.env.sheetsTableName,
-    Item: { id, handles, tweet }
+    Item: { id, title, description, handles, tweet }
   }, (error, data) => {
     if (error) {
       console.log(err, err.stack);
@@ -62,6 +64,8 @@ module.exports.fetch = (event, context, callback) => {
 
       const sheet = {};
       sheet.id = data.Item.id.S;
+      sheet.title = (data.Item.title) ? data.Item.title.S : '';
+      sheet.description = (data.Item.description) ? data.Item.description.S : '';
       sheet.handles = data.Item.handles.L.map(item =>  item.S);
       sheet.tweet = data.Item.tweet.S;
 

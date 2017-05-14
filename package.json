@@ -3,6 +3,9 @@
   "version": "1.0.3",
   "description": "",
   "main": "sheets.js",
+  "scripts": {
+    "jscs": "node_modules/.bin/jscs *.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coreyferguson/tweetsheets-api.git"
