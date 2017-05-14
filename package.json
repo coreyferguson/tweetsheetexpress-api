@@ -3,9 +3,6 @@
   "version": "1.0.3",
   "description": "",
   "main": "sheets.js",
-  "devDependencies": {
-    "uuid": "^3.0.1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/coreyferguson/tweetsheets-api.git"
@@ -17,6 +14,11 @@
   },
   "homepage": "https://github.com/coreyferguson/tweetsheets-api#readme",
   "dependencies": {
-    "serverless-dynamodb-local": "^0.2.21"
+    "csv-stringify": "^1.0.4",
+    "serverless-dynamodb-local": "^0.2.21",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "jscs": "^3.0.7"
   }
 }

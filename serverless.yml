@@ -37,6 +37,13 @@ functions:
           method: GET
           path: sheets
           cors: true
+  downloadCsv:
+    handler: sheets.downloadCsv
+    events:
+      - http:
+          method: GET
+          path: sheets/csv
+          cors: true
 
 resources:
   Resources:
