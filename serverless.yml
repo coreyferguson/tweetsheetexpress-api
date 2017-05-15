@@ -5,8 +5,18 @@ plugins:
   - serverless-dynamodb-local
 
 custom:
+
   stage: ${opt:stage, self:provider.stage}
   sheetsTableName: sheets-${self:custom.stage}
+
+  dynamodb:
+    start:
+      migrate: true
+      seed: true
+    seed:
+      testbed:
+        - table: ${self:custom.sheetsTableName}
+        sources: [./sheets-testbed.json]
 
 provider:
   name: aws
