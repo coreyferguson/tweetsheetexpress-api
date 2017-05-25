@@ -15,8 +15,10 @@ custom:
       seed: true
     seed:
       testbed:
-        - table: ${self:custom.sheetsTableName}
-        sources: [./sheets-testbed.json]
+        sources:
+          - table: ${self:custom.sheetsTableName}
+            sources:
+              - ./sheets-testbed.json
 
 provider:
   name: aws
