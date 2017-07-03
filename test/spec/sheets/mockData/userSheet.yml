@@ -1,0 +1,23 @@
+
+userId: '881936187492941825'
+sheetId: '7458b665-19dc-49db-803a-0c86c508cb1a'
+sheet:
+    id: '7458b665-19dc-49db-803a-0c86c508cb1a'
+    tweet: 'Hello @handle, how are you?'
+    handles:
+    - '@handleOne'
+    - '@handleTwo'
+    - '@handleThree'
+    - '@handleFour'
+    - '@handleFive'
+completions:
+-   handle: '@handleOne'
+    completed: true
+-   handle: '@handleTwo'
+    completed: false
+-   handle: '@handleThree'
+    completed: false
+-   handle: '@handleFour'
+    completed: false
+-   handle: '@handleFive'
+    completed: false

@@ -1,0 +1,20 @@
+{
+  "resource": "/session",
+  "path": "/session",
+  "httpMethod": "GET",
+  "headers": {
+    "origin": "https://local.tweetsheets-dev.overattribution.com:3000"
+  },
+  "queryStringParameters": {
+    "redirectUrl": "https://local.tweetsheets-dev.overattribution.com:3000/#/sheets/7458b665-19dc-49db-803a-0c86c508cb1a"
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "path": "/session",
+    "resourcePath": "/session",
+    "httpMethod": "GET"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}

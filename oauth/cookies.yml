@@ -1,0 +1,5 @@
+
+userIdLabel: twitterUserId
+tokenLabel: twitterToken
+tokenSecretLabel: twitterTokenSecret
+redirectUrlLabel: tweetsheetsRedirectUrl

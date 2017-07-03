@@ -11,7 +11,7 @@
   "disallowSpacesInFunctionDeclaration": {
     "beforeOpeningRoundBrace": true
   },
-  "disallowSpacesInsideBrackets": true,
+  "disallowSpacesInsideBrackets": false,
   "disallowEmptyBlocks": true,
   "disallowSpacesInCallExpression": true,
   "disallowSpacesInsideArrayBrackets": true,
@@ -32,7 +32,7 @@
   "disallowKeywordsOnNewLine": ["else"],
   "disallowMultipleLineBreaks": true,
   "disallowMultipleLineStrings": true,
-  "disallowMultipleVarDecl": true,
+  "disallowMultipleVarDecl": false,
   "disallowSpaceBeforeComma": true,
   "disallowSpaceBeforeSemicolon": true,
   "requireSpaceBeforeBlockStatements": true,
@@ -42,7 +42,7 @@
   "requireCommaBeforeLineBreak": true,
   "requireSpaceBeforeBinaryOperators": false,
   "requireSpaceAfterBinaryOperators": false,
-  "requireCamelCaseOrUpperCaseIdentifiers": true,
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
   "requireLineFeedAtFileEnd": true,
   "requireCapitalizedConstructors": true,
   "requireDotNotation": true,

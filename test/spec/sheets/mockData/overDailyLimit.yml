@@ -1,0 +1,6 @@
+
+name: StatusCodeError
+statusCode: 403
+message: 403 - "{\"errors\":[{\"code\":185,\"message\":\"User is over daily status
+    update limit.\"}]}"
+error: '{"errors":[{"code":185,"message":"User is over daily status update limit."}]}'

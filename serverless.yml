@@ -2,11 +2,14 @@
 service: tweetsheets-api
 
 plugins:
-  - serverless-dynamodb-local
+  - serverless-crypt
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   sheetsTableName: sheets-${self:custom.stage}
+  usersTableName: users-${self:custom.stage}
+  usersSheetsTableName: usersSheets-${self:custom.stage}
+  cryptKeyId: ${file(./serverless.env.yml):prod.AWS_KMS_KEYID}
 
 provider:
   name: aws
@@ -14,15 +17,41 @@ provider:
   region: us-west-2
   runtime: nodejs6.10
   environment:
+    stage: ${self:custom.stage}
     sheetsTableName: ${self:custom.sheetsTableName}
+    usersTableName: ${self:custom.usersTableName}
+    usersSheetsTableName: ${self:custom.usersSheetsTableName}
+    AWS_KMS_KEYID: ${self:custom.cryptKeyId}
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:us-west-2:*:*"
+    - Effect: Allow
+      Action:
+        - kms:Decrypt
+      Resource: "arn:aws:kms:${self:provider.region}:863138142000:key/${self:custom.cryptKeyId}"
 
 functions:
+
+  # Session
+  session:
+    handler: oauth/controller/lambda.session
+    events:
+      - http:
+          method: GET
+          path: session
+          cors: true
+  callback:
+    handler: oauth/controller/lambda.callback
+    events:
+      - http:
+          method: GET
+          path: callback
+          cors: true
+
+  # Sheets
   create:
     handler: sheets.create
     events:
@@ -44,6 +73,21 @@ functions:
           method: GET
           path: sheets/csv
           cors: true
+  tweet:
+    handler: sheets/controller/lambda.tweet
+    timeout: 15
+    events:
+      - http:
+          method: POST
+          path: sheets/tweet
+          cors: true
+
+  tweetPreflight:
+    handler: sheets/controller/lambda.tweetPreflight
+    events:
+      - http:
+          method: OPTIONS
+          path: sheets/tweet
 
 resources:
   Resources:
@@ -57,6 +101,36 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.usersTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    usersSheetsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.usersSheetsTableName}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: sheetId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: sheetId
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

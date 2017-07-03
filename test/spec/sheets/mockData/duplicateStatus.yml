@@ -1,0 +1,5 @@
+
+name: StatusCodeError
+statusCode: 403
+message: 403 - "{\"errors\":[{\"code\":187,\"message\":\"Status is a duplicate.\"}]}"
+error: '{"errors":[{"code":187,"message":"Status is a duplicate."}]}'

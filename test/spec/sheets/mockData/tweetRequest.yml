@@ -1,0 +1,14 @@
+
+resource: /sheets/tweet
+path: /sheets/tweet
+httpMethod: POST
+headers:
+    Cookie: >
+      twitterToken=881936187492941825-cyrgkZfPmDF6wU8GNkWShb4KEJlMyeb;
+      twitterTokenSecret=5rJlIxUiUpq1K4Sb8kZorWlY2R55EvtRLySxn7IuJ8lgj;
+      twitterUserId=881936187492941825
+    Host: tweetsheets-api.overattribution.com
+    origin: https://tweetsheets.overattribution.com
+queryStringParameters: null
+pathParameters: null
+body: '{"sheetId":"bcc40f6a-9998-4904-be88-c4ed0413f9f8","userId":"881936187492941825"}'

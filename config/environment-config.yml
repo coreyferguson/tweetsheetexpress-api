@@ -1,0 +1,20 @@
+
+preprod:
+  api:
+    domain: tweetsheets-api-dev.overattribution.com
+    allowOrigins:
+      - https://tweetsheets-dev.overattribution.com
+      - https://local.tweetsheets-dev.overattribution.com:3000
+    batch:
+      size: 10
+      throttleDelayInSeconds: 60
+
+test:
+  express:
+    port: 3001
+
+prod:
+  api:
+    domain: tweetsheets-api.overattribution.com
+    allowOrigins:
+      - https://tweetsheets.overattribution.com

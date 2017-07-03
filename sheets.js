@@ -32,7 +32,7 @@ module.exports.create = (event, context, callback) => {
     Item: { id, title, description, handles, tweet }
   }, (error, data) => {
     if (error) {
-      console.log(err, err.stack);
+      console.log(error, error.stack);
       callback(error);
     } else {
       console.log(`successfully created item: ${id.S}`);

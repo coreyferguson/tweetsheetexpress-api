@@ -1,0 +1,24 @@
+{
+  "resource": "/callback",
+  "path": "/callback",
+  "httpMethod": "GET",
+  "headers": {
+    "origin": "https://local.tweetsheets-dev.overattribution.com:3000",
+    "Cookie": "twitterOauthTokenSecret=ZUU0k2VS8652QzspjFdQdNzUGxjYwJiR",
+    "Referer": "https://api.twitter.com/oauth/authorize"
+  },
+  "queryStringParameters": {
+    "user_id": "881936187492941825",
+    "oauth_token": "C6_urwAAAAAA1XxsAAABXR1ESuQ",
+    "oauth_verifier": "CwFVkrS7fjyzO3HObPwwaB3EKZWz4Z0j"
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "path": "/callback",
+    "resourcePath": "/callback",
+    "httpMethod": "GET"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}
