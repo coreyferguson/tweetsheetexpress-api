@@ -18,6 +18,10 @@ describe('userSheetService unit tests', () => {
 
   const sandbox = sinon.sandbox.create();
 
+  beforeEach(() => {
+    sandbox.stub(console, 'info');
+  })
+
   afterEach(() => {
     sandbox.restore();
   });

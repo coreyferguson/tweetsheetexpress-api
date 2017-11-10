@@ -17,6 +17,9 @@ test:
     allowOrigins:
       - https://tweetsheets-test.overattribution.com
       - https://tweetsheets-test2.overattribution.com:3000
+    batch:
+      size: 10
+      throttleDelayInSeconds: 60
 
 prod:
   api:
