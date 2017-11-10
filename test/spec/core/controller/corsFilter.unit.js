@@ -2,7 +2,7 @@
 const corsFilter = require('../../../../core/controller/corsFilter');
 const { expect } = require('../../../support/TestUtils');
 
-describe.only('corsFilter unit tests', () => {
+describe('corsFilter unit tests', () => {
 
   const defaultHeaders = {
     'Access-Control-Allow-Origin': 'https://tweetsheets-test.overattribution.com',

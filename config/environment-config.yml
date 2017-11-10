@@ -13,6 +13,7 @@ test:
   express:
     port: 3001
   api:
+    domain: tweetsheets-api-test.overattribution.com
     allowOrigins:
       - https://tweetsheets-test.overattribution.com
       - https://tweetsheets-test2.overattribution.com:3000
