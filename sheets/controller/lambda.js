@@ -1,34 +1,14 @@
 
 const controller = require('./sheetsController');
 const config = require('../../config');
+const filterChain = require('../../core/controller/filterChain');
 
 module.exports.tweet = (event, context, callback) => {
-  return wrap(event, controller.tweet).then(response => {
+  return filterChain.wrapInChain(event, controller.tweet).then(response => {
 
   }).catch(error => {
 
-  })
-  // callback(null, {
-  //   statusCode: 200,
-  //   body: JSON.stringify(event)
-  // });
-  // allow origin
-  let allowOrigin;
-  if (event && event.headers && event.headers.origin) {
-    config.env.api.allowOrigins.forEach(origin => {
-      if (origin == event.headers.origin) allowOrigin = origin;
-    });
-    if (allowOrigin == null) {
-      callback(null, {
-        statusCode: 401,
-        headers: {
-          'Access-Control-Allow-Origin': config.env.api.allowOrigins[0],
-          'Access-Control-Allow-Credentials': true
-        }
-      });
-      return;
-    }
-  }
+  });
 
   return controller.tweet(event).then(response => {
     callback(

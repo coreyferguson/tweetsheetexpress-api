@@ -4,7 +4,7 @@ const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('filterChain unit tests', () => {
 
-  it('apply all links in chain until callback', () => {
+  it('apply all filters in chain', () => {
     let filterChain = new FilterChain({
       chain: [
         { apply: sinon.spy((event, response) => Promise.resolve(true)) },
@@ -17,14 +17,34 @@ describe('filterChain unit tests', () => {
         expect(filterChain.chain[0].apply).to.be.calledOnce;
         expect(filterChain.chain[1].apply).to.be.calledOnce;
       });
+
   });
 
-  it('apply each link until one resolves `false`', () => {
+  it('apply all filters in chain + additional filter', () => {
+    let filterChain = new FilterChain({
+      chain: [
+        { apply: sinon.spy((event, response) => Promise.resolve(true)) },
+        { apply: sinon.spy((event, response) => Promise.resolve(true)) }
+      ]
+    });
+    const finalFilter = {
+      apply: sinon.spy((event, response) => {})
+    };
+    return expect(filterChain.wrapInChain({}, finalFilter))
+      .to.eventually.eql({ statusCode: 200 })
+      .then(() => {
+        expect(finalFilter.apply).to.be.calledOnce;
+        expect(filterChain.chain[0].apply).to.be.calledOnce;
+        expect(filterChain.chain[1].apply).to.be.calledOnce;
+      });
+  });
+
+  it('apply each filter until one resolves `false`', () => {
     let filterChain = new FilterChain({
       chain: [
         { apply: sinon.spy((event, response) => Promise.resolve(true)) },
         { apply: sinon.spy((event, response) => Promise.resolve(false)) },
-        // will not be called because previous link in chain resolves `false`
+        // will not be called because previous filter in chain resolves `false`
         { apply: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
@@ -36,12 +56,12 @@ describe('filterChain unit tests', () => {
       });
   });
 
-  it('apply each link until one does not return promise', () => {
+  it('apply each filter until one does not return promise', () => {
     let filterChain = new FilterChain({
       chain: [
         { apply: sinon.spy((event, response) => Promise.resolve(true)) },
         { apply: sinon.spy((event, response) => {}) },
-        // will not be called because previous link in chain resolves `false`
+        // will not be called because previous filter in chain resolves `false`
         { apply: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
@@ -53,7 +73,7 @@ describe('filterChain unit tests', () => {
       });
   });
 
-  it('event passed to each link', () => {
+  it('event passed to each filter', () => {
     const eventPropertyValidator = (event, response) => {
       expect(event.testPropertyLabel).to.equal('testPropertyValue');
       return Promise.resolve(true);
@@ -81,7 +101,7 @@ describe('filterChain unit tests', () => {
     return filterChain.wrapInChain();
   });
 
-  it('response shared by reference to all links in chain', () => {
+  it('response shared by reference to all filters in chain', () => {
     let filterChain = new FilterChain({
       chain: [
         {

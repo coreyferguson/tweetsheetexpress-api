@@ -9,20 +9,23 @@ class FilterChain {
     this.chain = options.chain || chain;
   }
 
-  wrapInChain(event) {
-      const response = { statusCode: 200 };
-      let index = 0;
-      const callback = () => Promise.resolve(response);
-      const applyNextLink = () => {
-        if (index === this.chain.length) return callback();
-        const promise = this.chain[index++].apply(event, response);
-        if (!promise) return callback();
-        return promise.then(shouldContinue => {
-          if (shouldContinue) return applyNextLink();
-          else return callback();
-        });
-      };
-      return applyNextLink();
+  wrapInChain(event, filter) {
+    const response = { statusCode: 200 };
+    const chain = (filter != null)
+      ? [ ...this.chain, filter ]
+      : this.chain;
+    let index = 0;
+    const callback = () => Promise.resolve(response);
+    const applyNextFilter = () => {
+      if (index === chain.length) return callback();
+      const promise = chain[index++].apply(event, response);
+      if (!promise) return callback();
+      return promise.then(shouldContinue => {
+        if (shouldContinue) return applyNextFilter();
+        else return callback();
+      });
+    };
+    return applyNextFilter();
   }
 
 }
