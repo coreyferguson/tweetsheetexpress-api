@@ -12,6 +12,10 @@ preprod:
 test:
   express:
     port: 3001
+  api:
+    allowOrigins:
+      - https://tweetsheets-test.overattribution.com
+      - https://tweetsheets-test2.overattribution.com:3000
 
 prod:
   api:

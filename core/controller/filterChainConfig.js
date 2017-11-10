@@ -1,8 +1,6 @@
 
-const cors = require('./cors');
-
 const filterChain = [
-  cors
+  require('./corsFilter')
 ];
 
 module.exports = filterChain;

@@ -2,7 +2,7 @@
 const { FilterChain } = require('../../../../core/controller/filterChain');
 const { expect, sinon } = require('../../../support/TestUtils');
 
-describe.only('filterChain unit tests', () => {
+describe('filterChain unit tests', () => {
 
   it('apply all links in chain until callback', () => {
     let filterChain = new FilterChain({

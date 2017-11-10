@@ -7,8 +7,8 @@
     "deploy": "npm test && ./node_modules/.bin/sls deploy",
     "test": "npm run testJscs && npm run testMocha",
     "testJscs": "./node_modules/.bin/jscs **/*.js",
-    "testMocha": "./node_modules/.bin/mocha --recursive test/spec",
-    "testWatch": "./node_modules/.bin/mocha --recursive --watch test/spec"
+    "testMocha": "stage=test ./node_modules/.bin/mocha --recursive test/spec",
+    "testWatch": "stage=test ./node_modules/.bin/mocha --recursive --watch test/spec"
   },
   "repository": {
     "type": "git",
