@@ -15,7 +15,7 @@ class SheetsController {
     this._errors = this._ymlParser.parse(path.resolve(__dirname, 'errors.yml'));
   }
 
-  tweet(event) {
+  tweet(event, response) {
 
     // parse cookies
     const cookies = this._cookieParser.cookiesToJson(event);

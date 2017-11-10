@@ -23,6 +23,12 @@ class FilterChain {
       return promise.then(shouldContinue => {
         if (shouldContinue) return applyNextFilter();
         else return callback();
+      }).catch(error => {
+        const newError = new Error(error);
+        response.statusCode = 500;
+        response.body = { message: 'Internal Server Error' }
+        newError.response = response;
+        throw newError;
       });
     };
     return applyNextFilter();

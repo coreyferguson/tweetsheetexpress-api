@@ -61,7 +61,7 @@ describe('filterChain unit tests', () => {
       chain: [
         { apply: sinon.spy((event, response) => Promise.resolve(true)) },
         { apply: sinon.spy((event, response) => {}) },
-        // will not be called because previous filter in chain resolves `false`
+        // will not be called because previous filter in chain returns no promise
         { apply: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
@@ -132,6 +132,39 @@ describe('filterChain unit tests', () => {
         statusCode: 200,
         callCount: 3
       });
+  });
+
+  it('filter chain throws error, reports error + response', () => {
+    let filterChain = new FilterChain({
+      chain: [
+        {
+          apply: (event, response) => {
+            response.filter1Label = 'filter1Value'
+            return Promise.resolve(true);
+          }
+        },
+        {
+          apply: (event, response) => {
+            response.filter2Label = 'filter2Value'
+            throw new Error('oops, something bad happened');
+          }
+        }
+      ]
+    });
+    return filterChain.wrapInChain({}).then(response => {
+      throw new Error('should not have been fulfilled');
+    }).catch(error => {
+      expect(error.response).to.eql({
+        statusCode: 500,
+        body: {
+          message: 'Internal Server Error'
+        },
+        filter1Label: 'filter1Value',
+        filter2Label: 'filter2Value'
+      });
+      expect(error.message).to.eql('Error: oops, something bad happened');
+      expect(error.stack).to.not.be.undefined;
+    });
   });
 
 });

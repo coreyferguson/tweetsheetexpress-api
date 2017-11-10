@@ -5,9 +5,13 @@ const filterChain = require('../../core/controller/filterChain');
 
 module.exports.tweet = (event, context, callback) => {
   return filterChain.wrapInChain(event, controller.tweet).then(response => {
-
+    response.body = JSON.stringify(response.body);
+    callback(null, response);
   }).catch(error => {
-
+    if (error) console.log('error:', JSON.stringify(error));
+    if (error && error.stack)
+      console.log('error stack:', JSON.stringify(error.stack));
+    callback()
   });
 
   return controller.tweet(event).then(response => {
