@@ -24,29 +24,4 @@ module.exports.tweetPreflight = (event, context, callback) => {
       console.log('error stack:', JSON.stringify(error.stack));
     callback(error, error.response);
   });
-  // allow origin
-  let allowOrigin;
-  if (event && event.headers && event.headers.origin) {
-    config.env.api.allowOrigins.forEach(origin => {
-      if (origin == event.headers.origin) allowOrigin = origin;
-    });
-    if (allowOrigin == null) {
-      callback(null, {
-        statusCode: 401,
-        headers: {
-          'Access-Control-Allow-Origin': config.env.api.allowOrigins[0],
-          'Access-Control-Allow-Credentials': true
-        }
-      });
-    } else {
-      callback(null, {
-        statusCode: 200,
-        headers: {
-          'Access-Control-Allow-Origin': allowOrigin,
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Credentials': true
-        }
-      });
-    }
-  }
 };

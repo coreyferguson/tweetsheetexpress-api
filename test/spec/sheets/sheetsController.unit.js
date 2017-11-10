@@ -16,6 +16,10 @@ describe('sheetsController unit tests', () => {
 
   const sandbox = sinon.sandbox.create();
 
+  beforeEach(() => {
+    sandbox.stub(console, 'info');
+  })
+
   afterEach(() => {
     sandbox.restore();
   });
@@ -23,8 +27,10 @@ describe('sheetsController unit tests', () => {
   it('statusCode: 401 - no credentials', () => {
     const event = mock('tweetRequest');
     delete event.headers.Cookie;
-    return expect(controller.tweet(event))
-      .to.eventually.have.property('statusCode', 401);
+    const response = { statusCode: 200 };
+    return controller.tweet(event, response).then(() => {
+      expect(response.statusCode).to.equal(401);
+    })
   });
 
   it('statusCode: 403 - invalid credentials');
@@ -34,8 +40,10 @@ describe('sheetsController unit tests', () => {
     const body = JSON.parse(event.body);
     body.userId = 'someOtherUserId';
     event.body = JSON.stringify(body);
-    return expect(controller.tweet(event))
-      .to.eventually.have.property('statusCode', 403);
+    const response = { statusCode: 200 };
+    return controller.tweet(event, response).then(() => {
+      expect(response.statusCode).to.equal(403);
+    });
   });
 
   it('missing userId query parameter but authenticated; use session', () => {
@@ -45,7 +53,8 @@ describe('sheetsController unit tests', () => {
     event.body = JSON.stringify(body);
     sandbox.stub(controller._userSheetService, 'tweet')
       .returns(Promise.resolve('userSheetValue'));
-    return controller.tweet(event).then(response => {
+    const response = { statusCode: 200 };
+    return controller.tweet(event, response).then(() => {
       expect(response.statusCode).to.eql(200);
     });
   });
@@ -55,19 +64,20 @@ describe('sheetsController unit tests', () => {
     const body = JSON.parse(event.body);
     delete body.sheetId;
     event.body = JSON.stringify(body);
-    return controller.tweet(event).then(response => {
+    const response = { statusCode: 200 };
+    return controller.tweet(event, response).then(() => {
       expect(response.statusCode).to.eql(400);
-      expect(response.body).to.match(/sheetId/);
+      expect(response.body.message).to.match(/sheetId/);
     });
   });
 
   it('tweeted successfully or currently throttled', () => {
     sandbox.stub(controller._userSheetService, 'tweet')
       .returns(Promise.resolve('userSheetValue'));
-    return controller.tweet(mock('tweetRequest')).then(res => {
-      const body = JSON.parse(res.body);
-      expect(res.statusCode).to.eql(200);
-      expect(body.userSheet).to.eql('userSheetValue');
+    const response = { statusCode: 200 };
+    return controller.tweet(mock('tweetRequest'), response).then(() => {
+      expect(response.statusCode).to.eql(200);
+      expect(response.body.userSheet).to.eql('userSheetValue');
     });
   });
 

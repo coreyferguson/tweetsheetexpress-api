@@ -32,24 +32,28 @@ class SheetsController {
 
     // validate input
     console.info('userIdRequest:', userIdRequest);
-    if (!userIdRequest) return Promise.resolve({
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Missing required body property: userId' })
-    });
-    if (!sheetIdRequest) return Promise.resolve({
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Missing required body property: sheetId' })
-    });
+    if (!userIdRequest) {
+      response.statusCode = 400;
+      response.body = { message: 'Missing required body property: userId' };
+      return Promise.resolve(false);
+    }
+    if (!sheetIdRequest) {
+      response.statusCode = 400;
+      response.body = { message: 'Missing required body property: sheetId' };
+      return Promise.resolve(false);
+    }
 
     // validate authentication
-    if (!userIdCookie) return Promise.resolve({
-      statusCode: 401,
-      body: JSON.stringify({ error: 'Missing authentication credentials.' })
-    });
-    if (userIdRequest !== userIdCookie) return Promise.resolve({
-      statusCode: 403,
-      body: JSON.stringify({ error: 'You cannot tweet on behalf of someone else.' })
-    });
+    if (!userIdCookie) {
+      response.statusCode = 401;
+      response.body = { message: 'Missing authentication credentials.' };
+      return Promise.resolve(false);
+    }
+    if (userIdRequest !== userIdCookie) {
+      response.statusCode = 403;
+      response.body = { message: 'You cannot tweet on behalf of someone else.' }
+      return Promise.resolve(false);
+    }
 
     // tweet all
     return this._userSheetService.tweet(
