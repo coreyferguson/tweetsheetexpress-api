@@ -2,7 +2,7 @@
 const corsFilter = require('../../../../core/controller/corsFilter');
 const { expect } = require('../../../support/TestUtils');
 
-describe('corsFilter unit tests', () => {
+describe.only('corsFilter unit tests', () => {
 
   const defaultHeaders = {
     'Access-Control-Allow-Origin': 'https://tweetsheets-test.overattribution.com',
@@ -15,9 +15,10 @@ describe('corsFilter unit tests', () => {
       headers: { 'existingHeaderLabel': 'existingHeaderValue' }
     };
     return corsFilter.apply(
-      { headers: { origin: 'https://notmydomain.com' } },
+      { headers: { origin: 'https://tweetsheets-test.overattribution.com' } },
       response
-    ).then(() => {
+    ).then(shouldContinue => {
+      expect(shouldContinue).to.be.true;
       expect(response).to.eql({
         statusCode: 200,
         headers: Object.assign(
@@ -33,9 +34,10 @@ describe('corsFilter unit tests', () => {
     return corsFilter.apply(
       { headers: { origin: 'https://notmydomain.com' } },
       response
-    ).then(() => {
+    ).then(shouldContinue => {
+      expect(shouldContinue).to.be.false;
       expect(response).to.eql({
-        statusCode: 200,
+        statusCode: 401,
         headers: defaultHeaders
       });
     });
@@ -46,7 +48,8 @@ describe('corsFilter unit tests', () => {
     return corsFilter.apply(
       { headers: { origin: 'https://tweetsheets-test.overattribution.com' } },
       response
-    ).then(() => {
+    ).then(shouldContinue => {
+      expect(shouldContinue).to.be.true;
       expect(response).to.eql({
         statusCode: 200,
         headers: defaultHeaders
@@ -57,17 +60,19 @@ describe('corsFilter unit tests', () => {
   it('is alternative origin', () => {
     const response = { statusCode: 200 };
     return corsFilter.apply(
-      { headers: { origin: 'https://tweetsheets-test2.overattribution.com' } },
+      { headers: { origin: 'https://tweetsheets-test2.overattribution.com:3000' } },
       response
-    ).then(() => {
+    ).then(shouldContinue => {
+      expect(shouldContinue).to.be.true;
       expect(response).to.eql({
         statusCode: 200,
         headers: Object.assign(
+          defaultHeaders,
           {
             'Access-Control-Allow-Origin':
-              'https://tweetsheets-test2.overattribution.com',
-          },
-          defaultHeaders)
+              'https://tweetsheets-test2.overattribution.com:3000',
+          }
+        )
       });
     });
   });

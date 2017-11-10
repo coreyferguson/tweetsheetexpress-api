@@ -1,6 +1,6 @@
 
-const controller = require('./sheetsController');
 const config = require('../../config');
+const controller = require('./sheetsController');
 const filterChain = require('../../core/controller/filterChain');
 
 module.exports.tweet = (event, context, callback) => {
@@ -11,45 +11,19 @@ module.exports.tweet = (event, context, callback) => {
     if (error) console.log('error:', JSON.stringify(error));
     if (error && error.stack)
       console.log('error stack:', JSON.stringify(error.stack));
-    callback()
-  });
-
-  return controller.tweet(event).then(response => {
-    callback(
-      null,
-      Object.assign(
-        {
-          statusCode: 200,
-          headers: {
-            'Access-Control-Allow-Origin': allowOrigin,
-            'Access-Control-Allow-Credentials': true
-          }
-        },
-        response
-      )
-    );
-  }).catch(err => {
-    if (err) console.log('err:', JSON.stringify(err));
-    if (err && err.stack) console.log('err stack:', JSON.stringify(err.stack));
-    callback(
-      err,
-      Object.assign(
-        {
-          statusCode: 500,
-          headers: {
-            'Access-Control-Allow-Origin': allowOrigin,
-            'Access-Control-Allow-Credentials': true
-          },
-          body: JSON.stringify({
-            message: 'Sorry, something bad happened.'
-          })
-        }
-      )
-    );
+    callback(error, error.response);
   });
 };
 
 module.exports.tweetPreflight = (event, context, callback) => {
+  return filterChain.wrapInChain(event).then(response => {
+    callback(null, response);
+  }).catch(error => {
+    if (error) console.log('error:', JSON.stringify(error));
+    if (error && error.stack)
+      console.log('error stack:', JSON.stringify(error.stack));
+    callback(error, error.response);
+  });
   // allow origin
   let allowOrigin;
   if (event && event.headers && event.headers.origin) {

@@ -58,11 +58,8 @@ class SheetsController {
       tokenCookie,
       tokenSecretCookie
     ).then(userSheet => {
-      const body = { userSheet };
-      return Promise.resolve({
-        statusCode: 200,
-        body: JSON.stringify(body)
-      });
+      response.body = response.body || {};
+      response.body.userSheet = userSheet;
     });
 
   }

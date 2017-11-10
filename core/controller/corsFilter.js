@@ -4,16 +4,22 @@ const config = require('../../config/config');
 class CorsFilter {
 
   apply(event, response) {
-    let allowOrigin = config.env.api.allowOrigins[0];
+    let allowOrigin = undefined;
     if (event && event.headers && event.headers.origin) {
       config.env.api.allowOrigins.forEach(origin => {
         if (origin == event.headers.origin) allowOrigin = origin;
       });
     }
     response.headers = response.headers || {};
-    response.headers['Access-Control-Allow-Origin'] = allowOrigin;
+    response.headers['Access-Control-Allow-Origin'] = allowOrigin
+      || config.env.api.allowOrigins[0];
     response.headers['Access-Control-Allow-Credentials'] = true;
-    return Promise.resolve(true);
+    if (!allowOrigin) {
+      response.statusCode = 401;
+      return Promise.resolve(false);
+    } else {
+      return Promise.resolve(true);
+    }
   }
 
 }
