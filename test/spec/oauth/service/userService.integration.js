@@ -25,6 +25,10 @@ describe('userService integration test', () => {
     dynamodbLocal.stop();
   });
 
+  beforeEach(() => {
+    sandbox.stub(console, 'info');
+  });
+
   afterEach(() => {
     sandbox.restore();
   });
