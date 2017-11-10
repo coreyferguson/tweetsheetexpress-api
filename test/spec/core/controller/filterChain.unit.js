@@ -1,5 +1,6 @@
 
 const { FilterChain } = require('../../../../core/controller/filterChain');
+const { expect, sinon } = require('../../../support/TestUtils');
 
 describe.only('filterChain unit tests', () => {
 
@@ -15,6 +16,15 @@ describe.only('filterChain unit tests', () => {
       expect(response).to.eql({
         statusCode: 200
       });
+    });
+  });
+
+  xit('apply each link until one does not call `next` function', () => {
+    let filterChain = new FilterChain({
+      chain: [
+        { apply: sinon.spy((event, response, next) => {}) },
+        { apply: sinon.spy((event, response, next) => next()) }
+      ]
     });
   });
 

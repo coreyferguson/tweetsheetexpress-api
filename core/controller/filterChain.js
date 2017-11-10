@@ -16,11 +16,12 @@ class FilterChain {
       const nextFinal =
         (index < this.chain.length-1)
         ? next
-        : () => Promise.resolve();
-      if (index < this.chain.length)
-        return this.chain[index++].apply(event, response, nextFinal);
+        : () => {
+          callback(response);
+        };
+        this.chain[index++].apply(event, response, nextFinal);
     }
-    return next();
+    next();
   }
 
 }
