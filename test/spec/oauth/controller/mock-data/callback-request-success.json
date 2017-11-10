@@ -3,7 +3,7 @@
   "path": "/callback",
   "httpMethod": "GET",
   "headers": {
-    "origin": "https://local.tweetsheets-dev.overattribution.com:3000",
+    "origin": "https://tweetsheets-test.overattribution.com",
     "Cookie": "twitterOauthTokenSecret=ZUU0k2VS8652QzspjFdQdNzUGxjYwJiR",
     "Referer": "https://api.twitter.com/oauth/authorize"
   },

@@ -19,7 +19,6 @@ class SessionController {
   }
 
   session(event) {
-
     // validate request
     if (!event.queryStringParameters || !event.queryStringParameters.redirectUrl) {
       return Promise.resolve({

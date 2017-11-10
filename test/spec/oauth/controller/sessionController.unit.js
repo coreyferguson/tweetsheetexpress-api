@@ -44,10 +44,10 @@ describe('sessionController unit tests', () => {
         .to.startWith('https://api.twitter.com/oauth/authorize?oauth_token');
       expect(headers).to.have.property(
         'set-cookie',
-        `${cookieProps.tokenLabel}=El7ndAAAAAAA1XxsAAABXR1UXZ8; Domain=.tweetsheets-api-dev.overattribution.com; Secure; HttpOnly`);
+        `${cookieProps.tokenLabel}=El7ndAAAAAAA1XxsAAABXR1UXZ8; Domain=.tweetsheets-api-test.overattribution.com; Secure; HttpOnly`);
       expect(headers).to.have.property(
         'Set-cookie',
-        `${cookieProps.tokenSecretLabel}=de9mHW5jtZ8VL0FwloxuqgElPZgoXUcJ; Domain=.tweetsheets-api-dev.overattribution.com; Secure; HttpOnly`);
+        `${cookieProps.tokenSecretLabel}=de9mHW5jtZ8VL0FwloxuqgElPZgoXUcJ; Domain=.tweetsheets-api-test.overattribution.com; Secure; HttpOnly`);
     });
   });
 
@@ -84,15 +84,13 @@ describe('sessionController unit tests', () => {
     return controller.callback(mockData['callback-request-success']).then(response => {
       expect(response.headers).to.have.property(
         'set-cookie',
-        `${cookieProps.userIdLabel}=881936187492941825; Domain=.tweetsheets-api-dev.overattribution.com; Secure`);
+        `${cookieProps.userIdLabel}=881936187492941825; Domain=.tweetsheets-api-test.overattribution.com; Secure`);
       expect(response.headers).to.have.property(
         'Set-cookie',
-        `${cookieProps.tokenSecretLabel}=5rJlIxUiUpq1K4Sb8kZorWlY2R55EvtRLySxn7IuJ8lgj; Domain=.tweetsheets-api-dev.overattribution.com; Secure; HttpOnly`);
+        `${cookieProps.tokenSecretLabel}=5rJlIxUiUpq1K4Sb8kZorWlY2R55EvtRLySxn7IuJ8lgj; Domain=.tweetsheets-api-test.overattribution.com; Secure; HttpOnly`);
     });
   });
 
-  it('session - allowOrigin fail');
-  it('session - accessing directly; not cors');
   it('session - redirectUrl not given');
   it('session - timed out');
 

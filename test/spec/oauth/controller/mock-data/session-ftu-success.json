@@ -3,10 +3,10 @@
   "path": "/session",
   "httpMethod": "GET",
   "headers": {
-    "origin": "https://local.tweetsheets-dev.overattribution.com:3000"
+    "origin": "https://tweetsheets-test.overattribution.com"
   },
   "queryStringParameters": {
-    "redirectUrl": "https://local.tweetsheets-dev.overattribution.com:3000/#/sheets/7458b665-19dc-49db-803a-0c86c508cb1a"
+    "redirectUrl": "https://tweetsheets-test.overattribution.com/#/sheets/7458b665-19dc-49db-803a-0c86c508cb1a"
   },
   "pathParameters": null,
   "stageVariables": null,
