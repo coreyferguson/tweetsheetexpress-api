@@ -12,26 +12,25 @@ class FilterChain {
   wrapInChain(event, filter) {
     const response = { statusCode: 200 };
     const chain = (filter != null)
-      ? [ ...this.chain, { apply: filter } ]
+      ? [ ...this.chain, { process: filter } ]
       : this.chain;
     let index = 0;
     const callback = () => Promise.resolve(response);
-    const applyNextFilter = () => {
+    const processNextFilter = () => {
       if (index === chain.length) return callback();
-      const promise = chain[index++].apply(event, response);
+      const promise = chain[index++].process(event, response);
       if (!promise) return callback();
       return promise.then(shouldContinue => {
-        if (shouldContinue) return applyNextFilter();
+        if (shouldContinue) return processNextFilter();
         else return callback();
       }).catch(error => {
-        const newError = new Error(error);
         response.statusCode = 500;
         response.body = { message: 'Internal Server Error' }
-        newError.response = response;
-        throw newError;
+        error.response = response;
+        throw error;
       });
     };
-    return applyNextFilter();
+    return processNextFilter();
   }
 
 }

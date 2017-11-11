@@ -3,7 +3,7 @@ const config = require('../../config/config');
 
 class CorsFilter {
 
-  apply(event, response) {
+  process(event, response) {
     let allowOrigin = undefined;
     if (event && event.headers && event.headers.origin) {
       config.env.api.allowOrigins.forEach(origin => {

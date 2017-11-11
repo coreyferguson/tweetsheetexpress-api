@@ -15,7 +15,7 @@ describe('corsFilter unit tests', () => {
       statusCode: 200,
       headers: { 'existingHeaderLabel': 'existingHeaderValue' }
     };
-    return corsFilter.apply(
+    return corsFilter.process(
       { headers: { origin: 'https://tweetsheets-test.overattribution.com' } },
       response
     ).then(shouldContinue => {
@@ -32,7 +32,7 @@ describe('corsFilter unit tests', () => {
 
   it('is not an allowed origin', () => {
     const response = { statusCode: 200 };
-    return corsFilter.apply(
+    return corsFilter.process(
       { headers: { origin: 'https://notmydomain.com' } },
       response
     ).then(shouldContinue => {
@@ -46,7 +46,7 @@ describe('corsFilter unit tests', () => {
 
   it('is default origin', () => {
     const response = { statusCode: 200 };
-    return corsFilter.apply(
+    return corsFilter.process(
       { headers: { origin: 'https://tweetsheets-test.overattribution.com' } },
       response
     ).then(shouldContinue => {
@@ -60,7 +60,7 @@ describe('corsFilter unit tests', () => {
 
   it('is alternative origin', () => {
     const response = { statusCode: 200 };
-    return corsFilter.apply(
+    return corsFilter.process(
       { headers: { origin: 'https://tweetsheets-test2.overattribution.com:3000' } },
       response
     ).then(shouldContinue => {

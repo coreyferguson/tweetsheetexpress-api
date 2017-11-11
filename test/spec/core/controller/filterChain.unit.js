@@ -4,27 +4,27 @@ const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('filterChain unit tests', () => {
 
-  it('apply all filters in chain', () => {
+  it('process all filters in chain', () => {
     let filterChain = new FilterChain({
       chain: [
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) },
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy((event, response) => Promise.resolve(true)) },
+        { process: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}))
       .to.eventually.eql({ statusCode: 200 })
       .then(() => {
-        expect(filterChain.chain[0].apply).to.be.calledOnce;
-        expect(filterChain.chain[1].apply).to.be.calledOnce;
+        expect(filterChain.chain[0].process).to.be.calledOnce;
+        expect(filterChain.chain[1].process).to.be.calledOnce;
       });
 
   });
 
-  it('apply all filters in chain + additional filter', () => {
+  it('process all filters in chain + additional filter', () => {
     let filterChain = new FilterChain({
       chain: [
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) },
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy((event, response) => Promise.resolve(true)) },
+        { process: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
     const finalFilter = sinon.spy((event, response) => {});
@@ -32,42 +32,42 @@ describe('filterChain unit tests', () => {
       .to.eventually.eql({ statusCode: 200 })
       .then(() => {
         expect(finalFilter).to.be.calledOnce;
-        expect(filterChain.chain[0].apply).to.be.calledOnce;
-        expect(filterChain.chain[1].apply).to.be.calledOnce;
+        expect(filterChain.chain[0].process).to.be.calledOnce;
+        expect(filterChain.chain[1].process).to.be.calledOnce;
       });
   });
 
-  it('apply each filter until one resolves `false`', () => {
+  it('process each filter until one resolves `false`', () => {
     let filterChain = new FilterChain({
       chain: [
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) },
-        { apply: sinon.spy((event, response) => Promise.resolve(false)) },
+        { process: sinon.spy((event, response) => Promise.resolve(true)) },
+        { process: sinon.spy((event, response) => Promise.resolve(false)) },
         // will not be called because previous filter in chain resolves `false`
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}))
       .to.eventually.eql({ statusCode: 200 }).then(() => {
-        expect(filterChain.chain[0].apply).to.be.calledOnce;
-        expect(filterChain.chain[1].apply).to.be.calledOnce;
-        expect(filterChain.chain[2].apply).to.not.be.called;
+        expect(filterChain.chain[0].process).to.be.calledOnce;
+        expect(filterChain.chain[1].process).to.be.calledOnce;
+        expect(filterChain.chain[2].process).to.not.be.called;
       });
   });
 
-  it('apply each filter until one does not return promise', () => {
+  it('process each filter until one does not return promise', () => {
     let filterChain = new FilterChain({
       chain: [
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) },
-        { apply: sinon.spy((event, response) => {}) },
+        { process: sinon.spy((event, response) => Promise.resolve(true)) },
+        { process: sinon.spy((event, response) => {}) },
         // will not be called because previous filter in chain returns no promise
-        { apply: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}))
       .to.eventually.eql({ statusCode: 200 }).then(() => {
-        expect(filterChain.chain[0].apply).to.be.calledOnce;
-        expect(filterChain.chain[1].apply).to.be.calledOnce;
-        expect(filterChain.chain[2].apply).to.not.be.called;
+        expect(filterChain.chain[0].process).to.be.calledOnce;
+        expect(filterChain.chain[1].process).to.be.calledOnce;
+        expect(filterChain.chain[2].process).to.not.be.called;
       });
   });
 
@@ -78,8 +78,8 @@ describe('filterChain unit tests', () => {
     };
     let filterChain = new FilterChain({
       chain: [
-        { apply: eventPropertyValidator },
-        { apply: eventPropertyValidator }
+        { process: eventPropertyValidator },
+        { process: eventPropertyValidator }
       ]
     });
     return filterChain.wrapInChain({ testPropertyLabel: 'testPropertyValue' });
@@ -92,8 +92,8 @@ describe('filterChain unit tests', () => {
     };
     let filterChain = new FilterChain({
       chain: [
-        { apply: responsePropertyValidator },
-        { apply: responsePropertyValidator }
+        { process: responsePropertyValidator },
+        { process: responsePropertyValidator }
       ]
     });
     return filterChain.wrapInChain();
@@ -103,21 +103,21 @@ describe('filterChain unit tests', () => {
     let filterChain = new FilterChain({
       chain: [
         {
-          apply: (event, response) => {
+          process: (event, response) => {
             expect(response.callCount).to.be.undefined;
             response.callCount = 1;
             return Promise.resolve(true);
           }
         },
         {
-          apply: (event, response) => {
+          process: (event, response) => {
             expect(response.callCount).to.equal(1);
             response.callCount++;
             return Promise.resolve(true);
           }
         },
         {
-          apply: (event, response) => {
+          process: (event, response) => {
             expect(response.callCount).to.equal(2);
             response.callCount++;
             return Promise.resolve(true);
@@ -136,13 +136,13 @@ describe('filterChain unit tests', () => {
     let filterChain = new FilterChain({
       chain: [
         {
-          apply: (event, response) => {
+          process: (event, response) => {
             response.filter1Label = 'filter1Value'
             return Promise.resolve(true);
           }
         },
         {
-          apply: (event, response) => {
+          process: (event, response) => {
             response.filter2Label = 'filter2Value'
             throw new Error('oops, something bad happened');
           }
@@ -160,9 +160,34 @@ describe('filterChain unit tests', () => {
         filter1Label: 'filter1Value',
         filter2Label: 'filter2Value'
       });
-      expect(error.message).to.eql('Error: oops, something bad happened');
+      expect(error.message).to.eql('oops, something bad happened');
       expect(error.stack).to.not.be.undefined;
     });
   });
+
+  it('final filter should have appropriate `this` context', () => {
+    class Controller {
+      constructor() {
+        this.propertyLabel = 'propertyValue';
+      }
+      process() {}
+    }
+    let controller = new Controller();
+    const finalFilter = sinon.stub(controller, 'process');
+    let filterChain = new FilterChain({
+      chain: [
+        { process: sinon.spy((event, response) => Promise.resolve(true)) },
+        { process: sinon.spy((event, response) => Promise.resolve(true)) }
+      ]
+    });
+    return expect(filterChain.wrapInChain({}, controller.process.bind(controller)))
+      .to.eventually.eql({ statusCode: 200 })
+      .then(() => {
+        expect(finalFilter).to.be.calledOnce;
+        expect(filterChain.chain[0].process).to.be.calledOnce;
+        expect(filterChain.chain[1].process).to.be.calledOnce;
+      });
+
+  })
 
 });

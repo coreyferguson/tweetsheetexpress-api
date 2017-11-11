@@ -4,7 +4,7 @@ const controller = require('./sheetsController');
 const filterChain = require('../../core/controller/filterChain');
 
 module.exports.tweet = (event, context, callback) => {
-  return filterChain.wrapInChain(event, controller.tweet).then(response => {
+  return filterChain.wrapInChain(event, controller.tweet.bind(controller)).then(response => {
     response.body = JSON.stringify(response.body);
     callback(null, response);
   }).catch(error => {
