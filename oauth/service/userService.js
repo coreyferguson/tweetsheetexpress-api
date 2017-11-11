@@ -10,6 +10,12 @@ class UserService {
     this._userModelAssembler = options.userModelAssembler || userModelAssembler;
   }
 
+  isAuthenticated(userId, token, tokenSecret) {
+    return this.findOne(userId).then(user => {
+      return token === user.token && tokenSecret == user.tokenSecret;
+    });
+  }
+
   findOne(userId) {
     return this._userRepository.findOne(userId).then(entity => {
       return this._userModelAssembler.toModel(entity);

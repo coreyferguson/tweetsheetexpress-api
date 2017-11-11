@@ -66,4 +66,46 @@ describe('userService integration test', () => {
     });
   });
 
+  it('isAuthenticated - token does not match', () => {
+    return userService.save({
+      id: '1234',
+      token: 'token',
+      tokenSecret: 'tokenSecret'
+    }).then(() => {
+      return expect(userService.isAuthenticated(
+        '1234',
+        'invalidToken',
+        'tokenSecret'
+      )).to.eventually.be.false;
+    });
+  });
+
+  it('isAuthenticated - tokenSecret does not match', () => {
+    return userService.save({
+      id: '1234',
+      token: 'token',
+      tokenSecret: 'tokenSecret'
+    }).then(() => {
+      return expect(userService.isAuthenticated(
+        '1234',
+        'token',
+        'invalidTokenSecret'
+      )).to.eventually.be.false;
+    });
+  });
+
+  it('isAuthenticated - user is authenticated', () => {
+    return userService.save({
+      id: '1234',
+      token: 'token',
+      tokenSecret: 'tokenSecret'
+    }).then(() => {
+      return expect(userService.isAuthenticated(
+        '1234',
+        'token',
+        'tokenSecret'
+      )).to.eventually.be.true;
+    });
+  });
+
 });

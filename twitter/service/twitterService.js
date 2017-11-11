@@ -13,6 +13,10 @@ class TwitterService {
     this._request = request;
   }
 
+  /**
+   * First step in Twitter's 3-legged authorization mechanism.
+   * https://developer.twitter.com/en/docs/basics/authentication/overview/3-legged-oauth
+   */
   fetchRequestToken() {
     return request.post({
       url: 'https://api.twitter.com/oauth/request_token',
@@ -24,6 +28,10 @@ class TwitterService {
     }).then(qs.parse);
   }
 
+  /**
+   * Second step in Twitter's 3-legged authorization mechanism.
+   * https://developer.twitter.com/en/docs/basics/authentication/overview/3-legged-oauth
+   */
   constructAuthorizeUrl(token) {
     return 'https://api.twitter.com/oauth/authorize' +
       '?' +
@@ -32,6 +40,10 @@ class TwitterService {
       });
   }
 
+  /**
+   * Third step in Twitter's 3-legged authorization mechanism.
+   * https://developer.twitter.com/en/docs/basics/authentication/overview/3-legged-oauth
+   */
   fetchAccessToken(token, token_secret, verifier) {
     return request.post({
       url: 'https://api.twitter.com/oauth/access_token',

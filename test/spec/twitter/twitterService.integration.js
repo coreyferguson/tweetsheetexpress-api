@@ -59,8 +59,7 @@ describe('twitterService - 3 Legged Authorization', function() {
       authorization.oauth_token,
       requestToken.oauth_token_secret,
       authorization.oauth_verifier
-    ).then(res => {
-      credentials = res;
+    ).then(credentials => {
       expect(credentials).to.have.property('user_id', '881936187492941825');
       expect(credentials).to.have.property('screen_name', 'tweetsheetstest');
     });
