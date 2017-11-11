@@ -64,6 +64,7 @@ class SheetsController {
     ).then(userSheet => {
       response.body = response.body || {};
       response.body.userSheet = userSheet;
+      return true;
     });
 
   }

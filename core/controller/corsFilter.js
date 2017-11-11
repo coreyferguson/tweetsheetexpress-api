@@ -14,6 +14,7 @@ class CorsFilter {
     response.headers['Access-Control-Allow-Origin'] = allowOrigin
       || config.env.api.allowOrigins[0];
     response.headers['Access-Control-Allow-Credentials'] = true;
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type';
     if (!allowOrigin) {
       response.statusCode = 401;
       return Promise.resolve(false);

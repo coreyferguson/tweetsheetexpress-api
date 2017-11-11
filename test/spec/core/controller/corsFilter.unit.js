@@ -6,7 +6,8 @@ describe('corsFilter unit tests', () => {
 
   const defaultHeaders = {
     'Access-Control-Allow-Origin': 'https://tweetsheets-test.overattribution.com',
-    'Access-Control-Allow-Credentials': true
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Headers': 'Content-Type'
   };
 
   it('does not overwrite any existing headers', () => {
