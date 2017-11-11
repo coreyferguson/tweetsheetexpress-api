@@ -12,7 +12,7 @@ class FilterChain {
   wrapInChain(event, filter) {
     const response = { statusCode: 200 };
     const chain = (filter != null)
-      ? [ ...this.chain, filter ]
+      ? [ ...this.chain, { apply: filter } ]
       : this.chain;
     let index = 0;
     const callback = () => Promise.resolve(response);

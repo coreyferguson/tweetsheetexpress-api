@@ -27,13 +27,11 @@ describe('filterChain unit tests', () => {
         { apply: sinon.spy((event, response) => Promise.resolve(true)) }
       ]
     });
-    const finalFilter = {
-      apply: sinon.spy((event, response) => {})
-    };
+    const finalFilter = sinon.spy((event, response) => {});
     return expect(filterChain.wrapInChain({}, finalFilter))
       .to.eventually.eql({ statusCode: 200 })
       .then(() => {
-        expect(finalFilter.apply).to.be.calledOnce;
+        expect(finalFilter).to.be.calledOnce;
         expect(filterChain.chain[0].apply).to.be.calledOnce;
         expect(filterChain.chain[1].apply).to.be.calledOnce;
       });
