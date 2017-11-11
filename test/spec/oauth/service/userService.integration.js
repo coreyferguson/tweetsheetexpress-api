@@ -66,6 +66,21 @@ describe('userService integration test', () => {
     });
   });
 
+  it('isAuthenticated - userId not given', () => {
+    return expect(userService.isAuthenticated(undefined, 'token', 'tokenSecret'))
+      .to.eventually.be.false;
+  });
+
+  it('isAuthenticated - token not given', () => {
+    return expect(userService.isAuthenticated('1234', undefined, 'tokenSecret'))
+      .to.eventually.be.false;
+  });
+
+  it('isAuthenticated - tokenSecret not given', () => {
+    return expect(userService.isAuthenticated('1234', 'token', undefined))
+      .to.eventually.be.false;
+  });
+
   it('isAuthenticated - token does not match', () => {
     return userService.save({
       id: '1234',

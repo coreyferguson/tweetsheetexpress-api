@@ -11,6 +11,7 @@ class UserRepository {
   }
 
   findOne(userId) {
+    console.info(`UserRepository.findOne(userId): ${userId}`);
     return new Promise((resolve, reject) => {
       this._dynamodb.getItem({
         TableName: this._usersTableName,
@@ -29,6 +30,7 @@ class UserRepository {
   }
 
   save(user) {
+    console.info(`UserRepository.save(user): ${user.id}`);
     return new Promise((resolve, reject) => {
       this._dynamodb.putItem({
         TableName: this._usersTableName,

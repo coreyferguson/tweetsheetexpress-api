@@ -2,7 +2,9 @@
 const bluebird = require('bluebird');
 const path = require('path');
 const cookieParser = require('../../core/controller/cookieParser');
+const userService = require('../../oauth/service/userService');
 const userSheetService = require('../service/userSheetService');
+const sheetService = require('../service/sheetService');
 const ymlParser = require('../../core/ymlParser');
 
 class SheetsController {
@@ -10,9 +12,36 @@ class SheetsController {
   constructor(options) {
     options = options || {};
     this._cookieParser = options.cookieParser || cookieParser;
+    this._userService = options.userService || userService;
     this._userSheetService = options.userSheetService || userSheetService;
+    this._sheetService = options.sheetService || sheetService;
     this._ymlParser = options.ymlParser || ymlParser;
     this._errors = this._ymlParser.parse(path.resolve(__dirname, 'errors.yml'));
+  }
+
+  findOne(event, response) {
+    console.info('event:', JSON.stringify(event));
+    // parse cookies
+    const cookies = this._cookieParser.cookiesToJson(event);
+    const cookieProps = this._ymlParser.parse(path.resolve(
+      __dirname, '../../oauth/cookies.yml'));
+    const userIdCookie = cookies[cookieProps.userIdLabel];
+    const token = cookies[cookieProps.tokenLabel];
+    const tokenSecret = cookies[cookieProps.tokenSecretLabel];
+    // parse query
+    const userId = event.queryStringParameters.userId || userIdCookie;
+    const sheetId = event.queryStringParameters.id;
+
+    return this._userService.isAuthenticated(
+      userId,
+      token,
+      tokenSecret
+    ).then(isAuthenticated => {
+      if (!isAuthenticated)
+        return this._sheetToResponse(sheetId, response);
+      else
+        return this._userSheetToResponse(userId, sheetId, response);
+    });
   }
 
   tweet(event, response) {
@@ -62,11 +91,23 @@ class SheetsController {
       tokenCookie,
       tokenSecretCookie
     ).then(userSheet => {
-      response.body = response.body || {};
-      response.body.userSheet = userSheet;
-      return true;
+      response.body = userSheet;
     });
 
+  }
+
+  _userSheetToResponse(userId, sheetId, response) {
+    return this._userSheetService.findOne(userId, sheetId).then(userSheet => {
+      response.body = response.body || {};
+      response.body = userSheet;
+    });
+  }
+
+  _sheetToResponse(sheetId, response) {
+    return this._sheetService.findOne(sheetId).then(sheet => {
+      response.body = response.body || {};
+      response.body.sheet = sheet;
+    });
   }
 
 }

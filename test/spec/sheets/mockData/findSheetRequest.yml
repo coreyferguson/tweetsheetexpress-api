@@ -1,0 +1,10 @@
+body: null
+headers:
+    Accept: application/json, text/plain, */*
+    Host: tweetsheets-api-dev.overattribution.com
+    origin: https://local.tweetsheets-dev.overattribution.com:3000
+httpMethod: GET
+path: /sheets
+pathParameters: null
+queryStringParameters:
+    id: 23c6787f-f86f-463b-8182-9369fbd55e0d

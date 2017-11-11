@@ -19,6 +19,10 @@ describe('sheetService integration test', () => {
     return dynamodbLocal.createTable('sheetsTable', 'sheets-test');
   });
 
+  beforeEach(() => {
+    sandbox.stub(console, 'info');
+  });
+
   after(() => {
     repository._dynamodb = dynamodb;
     repository._sheetsTableName = sheetsTableName;

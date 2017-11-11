@@ -11,12 +11,14 @@ class SheetService {
   }
 
   findOne(id) {
+    console.info(`SheetService.findOne(id): ${id}`);
     return this._repository.findOne(id).then(entity => {
       return this._assembler.toModel(entity);
     });
   }
 
   save(sheet) {
+    console.info(`SheetService.save(sheet.id): ${sheet.id}`);
     const entity = this._assembler.toEntity(sheet);
     return this._repository.save(entity);
   }

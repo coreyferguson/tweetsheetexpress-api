@@ -1,8 +1,18 @@
 
 const assembler = require('../../../sheets/service/sheetModelAssembler');
-const { expect } = require('../../support/TestUtils');
+const { expect, sinon } = require('../../support/TestUtils');
 
 describe('sheetModelAssembler unit tests', () => {
+
+  const sandbox = sinon.sandbox.create();
+
+  before(() => {
+    sandbox.stub(console, 'info');
+  });
+
+  after(() => {
+    sandbox.restore();
+  });
 
   it('null entity to null model', () => {
     return expect(assembler.toModel(null)).to.be.null;

@@ -8,11 +8,12 @@ const dynamodbLocal = require('../core/dynamodbLocal');
 
 describe('userSheetService integration test', () => {
 
-  let sandbox = sinon.sandbox.create();
+  const sandbox = sinon.sandbox.create();
   let dynamodb, sheetsTableName, usersSheetsTableName;
 
   before(function() {
     this.timeout(5000);
+    sandbox.stub(console, 'info');
     dynamodb = userSheetRepository._dynamodb;
     sheetsTableName = sheetRepository._sheetsTableName;
     usersSheetsTableName = userSheetRepository._usersSheetsTableName;
@@ -32,16 +33,17 @@ describe('userSheetService integration test', () => {
     });
   });
 
+  beforeEach(() => {
+    sandbox.restore();
+    sandbox.stub(console, 'info');
+  });
+
   after(() => {
     sheetRepository._dynamodb = dynamodb;
     userSheetRepository._dynamodb = dynamodb;
     sheetRepository._sheetsTableName = sheetsTableName;
     userSheetRepository._usersSheetsTableName = usersSheetsTableName;
     dynamodbLocal.stop();
-  });
-
-  beforeEach(() => {
-    sandbox.stub(console, 'log');
   });
 
   afterEach(() => {

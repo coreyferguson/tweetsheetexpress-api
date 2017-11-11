@@ -11,6 +11,7 @@ class SheetRepository {
   }
 
   findOne(id) {
+    console.info(`SheetRepository.findOne(id): ${id}`);
     return new Promise((resolve, reject) => {
       this._dynamodb.getItem({
         TableName: this._sheetsTableName,
@@ -29,6 +30,7 @@ class SheetRepository {
   }
 
   save(sheet) {
+    console.info(`SheetRepository.save(sheet.id): ${sheet.id}`);
     return new Promise((resolve, reject) => {
       this._dynamodb.putItem({
         TableName: this._sheetsTableName,

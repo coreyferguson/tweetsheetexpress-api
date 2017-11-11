@@ -2,6 +2,7 @@
 class SheetModelAssembler {
 
   toModel(entity) {
+    console.info('SheetModelAssembler.toModel');
     if (entity == null) return null;
     const model = {};
     // required properties
@@ -19,6 +20,7 @@ class SheetModelAssembler {
   }
 
   toEntity(model) {
+    console.info('SheetModelAssembler.toEntity');
     if (model == null) return null;
     const entity = {};
     // required properties

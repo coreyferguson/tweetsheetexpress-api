@@ -1,5 +1,5 @@
 
-const { expect } = require('../../../support/TestUtils');
+const { expect, sinon } = require('../../../support/TestUtils');
 const UserRepository = require('../../../../oauth/dao/userRepository').UserRepository;
 const dynamodbLocal = require('../../core/dynamodbLocal');
 
@@ -7,6 +7,7 @@ describe('userRepository integration tests', () => {
 
   let dynamodb;
   let userRepository;
+  const sandbox = sinon.sandbox.create();
 
   before(function() {
     this.timeout(5000);
@@ -15,10 +16,12 @@ describe('userRepository integration tests', () => {
       dynamodb,
       usersTableName: 'users-test'
     });
+    sandbox.stub(console, 'info');
     return dynamodbLocal.createTable('usersTable', 'users-test');
   });
 
   after(() => {
+    sandbox.restore();
     dynamodbLocal.stop();
   });
 

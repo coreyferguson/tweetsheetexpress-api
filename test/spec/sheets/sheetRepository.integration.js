@@ -1,10 +1,11 @@
 
-const { expect } = require('../../support/TestUtils');
+const { expect, sinon } = require('../../support/TestUtils');
 const SheetRepository = require('../../../sheets/dao/sheetRepository').SheetRepository;
 const dynamodbLocal = require('../core/dynamodbLocal');
 
 describe('sheetRepository integration tests', () => {
 
+  const sandbox = sinon.sandbox.create();
   let dynamodb;
   let sheetRepository;
 
@@ -15,10 +16,12 @@ describe('sheetRepository integration tests', () => {
       dynamodb,
       sheetsTableName: 'sheets-test'
     });
+    sandbox.stub(console, 'info');
     return dynamodbLocal.createTable('sheetsTable', 'sheets-test');
   });
 
   after(() => {
+    sandbox.restore();
     dynamodbLocal.stop();
   });
 

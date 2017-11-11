@@ -11,21 +11,24 @@ class UserService {
   }
 
   isAuthenticated(userId, token, tokenSecret) {
+    console.info(`UserService.isAuthenticated(userId, ...): ${userId}`);
+    if (!userId || !token || !tokenSecret) return Promise.resolve(false);
     return this.findOne(userId).then(user => {
       return token === user.token && tokenSecret == user.tokenSecret;
     });
   }
 
   findOne(userId) {
+    console.info(`UserService.findOne(userId): ${userId}`);
     return this._userRepository.findOne(userId).then(entity => {
       return this._userModelAssembler.toModel(entity);
     });
   }
 
   save(model) {
-    console.info('userService.save(model):', model);
+    console.info('UserService.save(model):', model);
     const entity = this._userModelAssembler.toEntity(model);
-    console.info('userService.save:entity:', entity);
+    console.info('UserService.save:entity:', entity);
     return this._userRepository.save(entity);
   }
 

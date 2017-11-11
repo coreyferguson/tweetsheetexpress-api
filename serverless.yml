@@ -52,28 +52,28 @@ functions:
           cors: true
 
   # Sheets
-  create:
+  postSheet:
     handler: sheets.create
     events:
       - http:
           method: POST
           path: sheets
           cors: true
-  fetch:
-    handler: sheets.fetch
+  getSheet:
+    handler: sheets/controller/lambda.findOne
     events:
       - http:
           method: GET
           path: sheets
           cors: true
-  downloadCsv:
+  downloadSheetCsv:
     handler: sheets.downloadCsv
     events:
       - http:
           method: GET
           path: sheets/csv
           cors: true
-  tweet:
+  tweetSheet:
     handler: sheets/controller/lambda.tweet
     timeout: 15
     events:
@@ -82,7 +82,7 @@ functions:
           path: sheets/tweet
           cors: true
 
-  tweetPreflight:
+  tweetSheetPreflight:
     handler: sheets/controller/lambda.tweetPreflight
     events:
       - http:
