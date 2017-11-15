@@ -123,4 +123,6 @@ describe('userSheetService unit tests', () => {
       .to.eventually.equal(false);
   });
 
+  it('tweet sheet always returns userSheet, even when throttled');
+
 });

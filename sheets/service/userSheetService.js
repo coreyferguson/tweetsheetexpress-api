@@ -19,6 +19,7 @@ class UserSheetService {
   }
 
   findOne(userId, sheetId) {
+    console.info('UserSheetService.findOne(userId, sheetId): ', userId, sheetId);
     return Promise.all([
       this._sheetRepository.findOne(sheetId),
       this._userSheetRepository.findOne(userId, sheetId)
@@ -35,7 +36,7 @@ class UserSheetService {
   }
 
   tweet(userId, sheetId, token, tokenSecret) {
-    console.info('userSheetService.tweet(userId, sheetId, token, tokenSecret):', userId, sheetId, token, tokenSecret)
+    console.info('UserSheetService.tweet(userId, sheetId, token, tokenSecret):', userId, sheetId, token, tokenSecret)
     return Promise.all([
       this._userService.findOne(userId),
       this.findOne(userId, sheetId)
@@ -49,14 +50,21 @@ class UserSheetService {
         }).then(() => {
           return userSheet;
         });
+        else return userSheet;
       });
     });
   }
 
   _isUserThrottled(user) {
+    console.info(
+      'UserSheetService._isUserThrottled(user.id, user.nextTweetsheetBatch):',
+      user.id,
+      user.nextTweetsheetBatch
+    );
     const nextTweetsheetBatch = new Date(user.nextTweetsheetBatch);
     const now = new Date();
     const msRemaining = nextTweetsheetBatch.getTime() - now.getTime();
+    console.info('UserSheetService._isUserThrottled, msRemaining:', msRemaining);
     return (msRemaining >= 0)
       ? Promise.resolve(true)
       : Promise.resolve(false);
