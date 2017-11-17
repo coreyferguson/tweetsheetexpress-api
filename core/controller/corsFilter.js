@@ -4,23 +4,40 @@ const config = require('../../config/config');
 class CorsFilter {
 
   process(event, response) {
-    let allowOrigin = undefined;
-    if (event && event.headers && event.headers.origin) {
-      config.env.api.allowOrigins.forEach(origin => {
-        if (origin == event.headers.origin) allowOrigin = origin;
-      });
+    console.info('CorsFilter.process');
+    return new Promise(resolve => {
+      let origin = this.getOrigin(event);
+      let allowedOrigin = this.getAllowedOrigin(origin);
+      response.headers = response.headers || {};
+      response.headers['Access-Control-Allow-Origin'] = allowedOrigin
+        || config.env.api.allowOrigins[0];
+      response.headers['Access-Control-Allow-Credentials'] = true;
+      response.headers['Access-Control-Allow-Headers'] = 'Content-Type';
+      resolve(true);
+    });
+  }
+
+  getOrigin(event) {
+    let origin;
+    if (event && event.headers) {
+      if (event.headers.origin) {
+        console.info('CorsFilter.getOrigin, event.headers.origin:', event.headers.origin);
+        origin = event.headers.origin;
+      } else if (event.headers.Origin) {
+        console.info('CorsFilter.getOrigin, event.headers.Origin:', event.headers.Origin);
+        origin = event.headers.Origin;
+      }
     }
-    response.headers = response.headers || {};
-    response.headers['Access-Control-Allow-Origin'] = allowOrigin
-      || config.env.api.allowOrigins[0];
-    response.headers['Access-Control-Allow-Credentials'] = true;
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type';
-    if (!allowOrigin) {
-      response.statusCode = 401;
-      return Promise.resolve(false);
-    } else {
-      return Promise.resolve(true);
-    }
+    return origin;
+  }
+
+  getAllowedOrigin(origin) {
+    let allowedOrigin = config.env.api.allowOrigins[0];
+    if (!origin) return allowedOrigin;
+    config.env.api.allowOrigins.forEach(o => {
+      if (o == origin) allowedOrigin = o;
+    });
+    return allowedOrigin;
   }
 
 }

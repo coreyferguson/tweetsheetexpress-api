@@ -1,6 +1,6 @@
 
 const corsFilter = require('../../../../core/controller/corsFilter');
-const { expect } = require('../../../support/TestUtils');
+const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('corsFilter unit tests', () => {
 
@@ -9,6 +9,16 @@ describe('corsFilter unit tests', () => {
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Headers': 'Content-Type'
   };
+
+  let sandbox = sinon.sandbox.create();
+
+  before(() => {
+    sandbox.stub(console, 'info');
+  });
+
+  after(() => {
+    sandbox.restore();
+  });
 
   it('does not overwrite any existing headers', () => {
     const response = {
@@ -68,6 +78,7 @@ describe('corsFilter unit tests', () => {
       expect(response).to.eql({
         statusCode: 200,
         headers: Object.assign(
+          {},
           defaultHeaders,
           {
             'Access-Control-Allow-Origin':
@@ -77,5 +88,21 @@ describe('corsFilter unit tests', () => {
       });
     });
   });
+
+  it('header is `Origin` with uppercase O', () => {
+    const response = { statusCode: 200 };
+    return corsFilter.process(
+      { headers: { Origin: 'https://tweetsheets-test.overattribution.com' } },
+      response
+    ).then(shouldContinue => {
+      expect(shouldContinue).to.be.true;
+      expect(response).to.eql({
+        statusCode: 200,
+        headers: defaultHeaders
+      });
+    });
+  });
+
+  it('origin header with lower and upper case');
 
 });

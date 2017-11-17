@@ -20,7 +20,7 @@ class SheetsController {
   }
 
   findOne(event, response) {
-    console.info('event:', JSON.stringify(event));
+    console.info('sheetsController.findOne')
     // parse cookies
     const cookies = this._cookieParser.cookiesToJson(event);
     const cookieProps = this._ymlParser.parse(path.resolve(
@@ -31,6 +31,7 @@ class SheetsController {
     // parse query
     const userId = event.queryStringParameters.userId || userIdCookie;
     const sheetId = event.queryStringParameters.id;
+    console.info('sheetsController.findOne(), sheetId:', sheetId);
 
     return this._userService.isAuthenticated(
       userId,

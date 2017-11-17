@@ -18,67 +18,39 @@ class SessionController {
     this._cookieProps = ymlParser.parse(path.resolve(__dirname, '../cookies.yml'));
   }
 
-  session(event) {
+  session(event, response) {
     // validate request
     if (!event.queryStringParameters || !event.queryStringParameters.redirectUrl) {
-      return Promise.resolve({
-        statusCode: 400,
-        body: JSON.stringify({
-          message: 'Missing required `redirectUrl` parameter'
-        })
-      });
-    }
-
-    // allow origin
-    let allowOrigin;
-    if (event && event.headers && event.headers.origin) {
-      config.env.api.allowOrigins.forEach(origin => {
-        if (origin == event.headers.origin) allowOrigin = origin;
-      });
-      if (allowOrigin == null) {
-        return Promise.resolve({
-          statusCode: 401,
-          headers: {
-            'Access-Control-Allow-Origin': config.env.api.allowOrigins[0],
-            'Access-Control-Allow-Credentials': true
-          }
-        });
-      }
+      response.statusCode = 400;
+      response.body = { message: 'Missing required `redirectUrl` parameter' };
+      return;
     }
 
     // authenticate
     return authenticator.authenticate(event).then(user => {
-      if (!user) {
-        return twitterService.fetchRequestToken().then(token => {
+      if (user) {
+        response.body = {
+          authorized: true,
+          userId: user.id
+        };
+      } else {
+        return this._twitterService.fetchRequestToken().then(token => {
           const authorizationUrl =
-            twitterService.constructAuthorizeUrl(token.oauth_token);
-          return {
-            body: JSON.stringify({
-              authorized: false,
-              authorizationUrl,
-              event
-            }),
-            headers: {
-              'Access-Control-Allow-Origin': allowOrigin,
-              'Access-Control-Allow-Credentials': true,
-              'set-cookie': `${this._cookieProps.tokenLabel}=${token.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`,
-              'Set-cookie': `${this._cookieProps.tokenSecretLabel}=${token.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`,
-              'sEt-cookie': `${this._cookieProps.redirectUrlLabel}=${event.queryStringParameters.redirectUrl}; Domain=.${config.env.api.domain}; Secure; HttpOnly`
-            }
+            this._twitterService.constructAuthorizeUrl(token.oauth_token);
+          response.headers = response.headers || {};
+          response.headers['set-cookie'] = `${this._cookieProps.tokenLabel}=${token.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.headers['Set-cookie'] = `${this._cookieProps.tokenSecretLabel}=${token.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.headers['sEt-cookie'] = `${this._cookieProps.redirectUrlLabel}=${event.queryStringParameters.redirectUrl}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.body = {
+            authorized: false,
+            authorizationUrl
           };
         });
-      } else {
-        return {
-          body: JSON.stringify({
-            authorized: true,
-            userId: user.id
-          })
-        };
       }
     });
   }
 
-  callback(event) {
+  callback(event, response) {
     const cookies = this._cookieParser.cookiesToJson(event);
     const cookieToken = cookies[this._cookieProps.tokenLabel];
     const cookieTokenSecret = cookies[this._cookieProps.tokenSecretLabel];
@@ -88,12 +60,9 @@ class SessionController {
 
     // verify request token from `/session` is the same as what twitter gave us
     if (cookieToken !== twitterToken) {
-      return Promise.resolve({
-        statusCode: 401,
-        body: JSON.stringify({
-          message: 'Missing authentication credentials.'
-        })
-      });
+      response.statusCode = 401;
+      response.body = { message: 'Missing authentication credentials.' };
+      return;
     }
 
     // user is who they say they are, save credentials to cookies and database
@@ -110,15 +79,12 @@ class SessionController {
           return this._userService.save(user);
         }).then(() => {
           // set auth cookies and redirect user to original location
-          return {
-            statusCode: 302,
-            headers: {
-              'location': redirectUrl,
-              'set-cookie': `${this._cookieProps.userIdLabel}=${res.user_id}; Domain=.${config.env.api.domain}; Secure`,
-              'sEt-cookie': `${this._cookieProps.tokenLabel}=${res.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`,
-              'Set-cookie': `${this._cookieProps.tokenSecretLabel}=${res.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`
-            }
-          };
+          response.statusCode = 302;
+          response.headers = response.headers || {};
+          response.headers['set-cookie'] = `${this._cookieProps.userIdLabel}=${res.user_id}; Domain=.${config.env.api.domain}; Secure`;
+          response.headers['sEt-cookie'] = `${this._cookieProps.tokenLabel}=${res.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.headers['Set-cookie'] = `${this._cookieProps.tokenSecretLabel}=${res.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.headers['location'] = redirectUrl
         });
       });
   }
