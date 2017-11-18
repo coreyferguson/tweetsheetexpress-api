@@ -25,7 +25,7 @@ class Server {
 
   waitForCallback() {
     if (!this._callbackPromise) {
-      this._callbackPromise = new Promise((resolve, reject) => {
+      this._callbackPromise = new Promise(resolve => {
         this._callbackResolve = resolve;
       });
     }

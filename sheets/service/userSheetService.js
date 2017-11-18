@@ -36,7 +36,7 @@ class UserSheetService {
   }
 
   tweet(userId, sheetId, token, tokenSecret) {
-    console.info('UserSheetService.tweet(userId, sheetId, token, tokenSecret):', userId, sheetId, token, tokenSecret)
+    console.info('UserSheetService.tweet(userId, sheetId, token, tokenSecret):', userId, sheetId, token, tokenSecret);
     return Promise.all([
       this._userService.findOne(userId),
       this.findOne(userId, sheetId)
@@ -99,8 +99,8 @@ class UserSheetService {
 
   _tweetOnce(handle, tweetTemplate, token, tokenSecret) {
     const tweet = tweetTemplate.replace(new RegExp('@handle', 'g'), handle);
-    let tweeted = false;
-    let error;
+    // let tweeted = false;
+    // let error;
     return this._twitterService
       .tweet(token, tokenSecret, tweet)
       .catch(err => {

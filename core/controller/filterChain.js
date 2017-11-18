@@ -1,5 +1,4 @@
 
-const bluebird = require('bluebird');
 const chain = require('./filterChainConfig');
 
 class FilterChain {
@@ -28,7 +27,7 @@ class FilterChain {
       }).catch(error => {
         console.info('filterChain.wrapInChain ERROR');
         response.statusCode = 500;
-        response.body = { message: 'Internal Server Error' }
+        response.body = { message: 'Internal Server Error' };
         error.response = response;
         throw error;
       });

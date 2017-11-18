@@ -1,6 +1,5 @@
 
 const bluebird = require('bluebird');
-const request = require('request-promise');
 const uuid = require('uuid/v4');
 const client = require('../oauth/client');
 const server = require('../oauth/server');
@@ -93,6 +92,7 @@ describe('twitterService - 3 Legged Authorization', function() {
         credentials.oauth_token_secret,
         id
       ).catch(err => {
+        /* eslint no-console: 'off' */
         console.log('err:', JSON.stringify(err));
         throw err;
       });

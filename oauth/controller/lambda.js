@@ -1,5 +1,4 @@
 
-const config = require('../../config');
 const controller = require('./sessionController');
 const filterChain = require('../../core/controller/filterChain');
 

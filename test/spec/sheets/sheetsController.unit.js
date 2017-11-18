@@ -19,7 +19,7 @@ describe('sheetsController unit tests', () => {
 
   beforeEach(() => {
     sandbox.stub(console, 'info');
-  })
+  });
 
   afterEach(() => {
     sandbox.restore();
@@ -33,7 +33,7 @@ describe('sheetsController unit tests', () => {
       const response = { statusCode: 200 };
       return controller.tweet(event, response).then(() => {
         expect(response.statusCode).to.equal(401);
-      })
+      });
     });
 
     it('statusCode: 403 - invalid credentials');

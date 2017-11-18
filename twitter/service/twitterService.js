@@ -84,7 +84,7 @@ class TwitterService {
       qs: {
         screen_name
       }
-    })
+    });
   }
 
   tweet(token, token_secret, message) {

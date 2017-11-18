@@ -1,5 +1,4 @@
 
-const bluebird = require('bluebird');
 const path = require('path');
 const cookieParser = require('../../core/controller/cookieParser');
 const userService = require('../../oauth/service/userService');
@@ -20,7 +19,7 @@ class SheetsController {
   }
 
   findOne(event, response) {
-    console.info('sheetsController.findOne')
+    console.info('sheetsController.findOne');
     // parse cookies
     const cookies = this._cookieParser.cookiesToJson(event);
     const cookieProps = this._ymlParser.parse(path.resolve(
@@ -81,7 +80,7 @@ class SheetsController {
     }
     if (userIdRequest !== userIdCookie) {
       response.statusCode = 403;
-      response.body = { message: 'You cannot tweet on behalf of someone else.' }
+      response.body = { message: 'You cannot tweet on behalf of someone else.' };
       return Promise.resolve(false);
     }
 

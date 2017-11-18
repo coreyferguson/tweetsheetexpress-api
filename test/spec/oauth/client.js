@@ -27,6 +27,7 @@ class Client {
 
   _allow(page) {
     return page.evaluate(function() {
+      /* eslint no-undef: 'off' */
       $('#username_or_email').val('tweetsheetstest');
       $('#password').val('ixaT:zp?69{@');
       $('#oauth_form').submit();

@@ -30,7 +30,7 @@ module.exports.create = (event, context, callback) => {
   dynamodb.putItem({
     TableName: process.env.sheetsTableName,
     Item: { id, title, description, handles, tweet }
-  }, (error, data) => {
+  }, error => {
     if (error) {
       console.log(error, error.stack);
       callback(error);

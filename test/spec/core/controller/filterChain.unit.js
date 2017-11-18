@@ -7,8 +7,8 @@ describe('filterChain unit tests', () => {
   it('process all filters in chain', () => {
     let filterChain = new FilterChain({
       chain: [
-        { process: sinon.spy((event, response) => Promise.resolve(true)) },
-        { process: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy(() => Promise.resolve(true)) },
+        { process: sinon.spy(() => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}))
@@ -23,11 +23,11 @@ describe('filterChain unit tests', () => {
   it('process all filters in chain + additional filter', () => {
     let filterChain = new FilterChain({
       chain: [
-        { process: sinon.spy((event, response) => Promise.resolve(true)) },
-        { process: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy(() => Promise.resolve(true)) },
+        { process: sinon.spy(() => Promise.resolve(true)) }
       ]
     });
-    const finalFilter = sinon.spy((event, response) => {});
+    const finalFilter = sinon.spy(() => {});
     return expect(filterChain.wrapInChain({}, finalFilter))
       .to.eventually.eql({ statusCode: 200 })
       .then(() => {
@@ -40,10 +40,10 @@ describe('filterChain unit tests', () => {
   it('process each filter until one resolves `false`', () => {
     let filterChain = new FilterChain({
       chain: [
-        { process: sinon.spy((event, response) => Promise.resolve(true)) },
-        { process: sinon.spy((event, response) => Promise.resolve(false)) },
+        { process: sinon.spy(() => Promise.resolve(true)) },
+        { process: sinon.spy(() => Promise.resolve(false)) },
         // will not be called because previous filter in chain resolves `false`
-        { process: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy(() => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}))
@@ -57,10 +57,10 @@ describe('filterChain unit tests', () => {
   it('process each filter until one does not return promise', () => {
     let filterChain = new FilterChain({
       chain: [
-        { process: sinon.spy((event, response) => Promise.resolve(true)) },
-        { process: sinon.spy((event, response) => {}) },
+        { process: sinon.spy(() => Promise.resolve(true)) },
+        { process: sinon.spy(() => {}) },
         // will not be called because previous filter in chain returns no promise
-        { process: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy(() => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}))
@@ -72,7 +72,7 @@ describe('filterChain unit tests', () => {
   });
 
   it('event passed to each filter', () => {
-    const eventPropertyValidator = (event, response) => {
+    const eventPropertyValidator = event => {
       expect(event.testPropertyLabel).to.equal('testPropertyValue');
       return Promise.resolve(true);
     };
@@ -137,19 +137,19 @@ describe('filterChain unit tests', () => {
       chain: [
         {
           process: (event, response) => {
-            response.filter1Label = 'filter1Value'
+            response.filter1Label = 'filter1Value';
             return Promise.resolve(true);
           }
         },
         {
           process: (event, response) => {
-            response.filter2Label = 'filter2Value'
+            response.filter2Label = 'filter2Value';
             throw new Error('oops, something bad happened');
           }
         }
       ]
     });
-    return filterChain.wrapInChain({}).then(response => {
+    return filterChain.wrapInChain({}).then(() => {
       throw new Error('should not have been fulfilled');
     }).catch(error => {
       expect(error.response).to.eql({
@@ -176,8 +176,8 @@ describe('filterChain unit tests', () => {
     const finalFilter = sinon.stub(controller, 'process');
     let filterChain = new FilterChain({
       chain: [
-        { process: sinon.spy((event, response) => Promise.resolve(true)) },
-        { process: sinon.spy((event, response) => Promise.resolve(true)) }
+        { process: sinon.spy(() => Promise.resolve(true)) },
+        { process: sinon.spy(() => Promise.resolve(true)) }
       ]
     });
     return expect(filterChain.wrapInChain({}, controller.process.bind(controller)))
@@ -188,6 +188,6 @@ describe('filterChain unit tests', () => {
         expect(filterChain.chain[1].process).to.be.calledOnce;
       });
 
-  })
+  });
 
 });

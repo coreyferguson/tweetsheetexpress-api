@@ -12,13 +12,15 @@ class SessionController {
   constructor(options) {
     options = options || {};
     this._authenticator = options.authenticator || authenticator;
-    this._cookieParser = options.cookieParser || cookieParser
-    this._twitterService = options.twitterService || twitterService
-    this._userService = options.userService || userService
+    this._cookieParser = options.cookieParser || cookieParser;
+    this._twitterService = options.twitterService || twitterService;
+    this._userService = options.userService || userService;
     this._cookieProps = ymlParser.parse(path.resolve(__dirname, '../cookies.yml'));
   }
 
   session(event, response) {
+    console.info('SessionController.session(event):', JSON.stringify(event));
+
     // validate request
     if (!event.queryStringParameters || !event.queryStringParameters.redirectUrl) {
       response.statusCode = 400;
@@ -35,6 +37,7 @@ class SessionController {
         };
       } else {
         return this._twitterService.fetchRequestToken().then(token => {
+          console.info('SessionController.session(), token:', JSON.stringify(token));
           const authorizationUrl =
             this._twitterService.constructAuthorizeUrl(token.oauth_token);
           response.headers = response.headers || {};
@@ -51,6 +54,7 @@ class SessionController {
   }
 
   callback(event, response) {
+    console.info('SessionController.callback(event):', JSON.stringify(event));
     const cookies = this._cookieParser.cookiesToJson(event);
     const cookieToken = cookies[this._cookieProps.tokenLabel];
     const cookieTokenSecret = cookies[this._cookieProps.tokenSecretLabel];
@@ -84,7 +88,7 @@ class SessionController {
           response.headers['set-cookie'] = `${this._cookieProps.userIdLabel}=${res.user_id}; Domain=.${config.env.api.domain}; Secure`;
           response.headers['sEt-cookie'] = `${this._cookieProps.tokenLabel}=${res.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
           response.headers['Set-cookie'] = `${this._cookieProps.tokenSecretLabel}=${res.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
-          response.headers['location'] = redirectUrl
+          response.headers['location'] = redirectUrl;
         });
       });
   }

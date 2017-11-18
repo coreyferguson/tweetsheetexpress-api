@@ -20,7 +20,7 @@ describe('userSheetService unit tests', () => {
 
   beforeEach(() => {
     sandbox.stub(console, 'info');
-  })
+  });
 
   afterEach(() => {
     sandbox.restore();
@@ -34,7 +34,7 @@ describe('userSheetService unit tests', () => {
       .stub(userSheetService._twitterService, 'tweet')
       .resolves();
     sandbox.stub(userSheetService._userService, 'findOne')
-      .resolves(mock('user'))
+      .resolves(mock('user'));
     sandbox.stub(userSheetService, 'save').resolves();
     sandbox.stub(userSheetService, '_isUserThrottled').resolves(false);
     sandbox.stub(userSheetService, '_throttleUser').resolves();
@@ -66,7 +66,7 @@ describe('userSheetService unit tests', () => {
     sandbox.stub(userSheetService, 'findOne').resolves(mock('userSheet'));
     const stub = sandbox.stub(userSheetService._twitterService, 'tweet');
     sandbox.stub(userSheetService._userService, 'findOne')
-      .resolves(mock('user'))
+      .resolves(mock('user'));
     stub.resolves();
     stub.onCall(1).rejects(mock('duplicateStatus'));
     sandbox.stub(userSheetService, 'save').resolves();
@@ -93,7 +93,7 @@ describe('userSheetService unit tests', () => {
       .returns(Promise.resolve(mock('userSheet')));
     const stub = sandbox.stub(userSheetService._twitterService, 'tweet');
     sandbox.stub(userSheetService._userService, 'findOne')
-      .resolves(mock('user'))
+      .resolves(mock('user'));
     stub.resolves();
     stub.onCall(1).rejects(mock('overDailyLimit'));
     sandbox.stub(userSheetService, 'save').resolves();

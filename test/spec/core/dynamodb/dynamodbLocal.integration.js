@@ -19,15 +19,15 @@ describe('dynamodb local integration tests', () => {
       dynamodb.createTable({
         TableName: 'temp',
         KeySchema: [
-            { AttributeName: 'id', KeyType: 'HASH' }
+          { AttributeName: 'id', KeyType: 'HASH' }
         ],
         AttributeDefinitions: [
-            { AttributeName: 'id', AttributeType: 'S' }
+          { AttributeName: 'id', AttributeType: 'S' }
         ],
         ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1
-          }
+          ReadCapacityUnits: 1,
+          WriteCapacityUnits: 1
+        }
       }, (err, data) => {
         if (err) reject(err);
         else resolve(data);

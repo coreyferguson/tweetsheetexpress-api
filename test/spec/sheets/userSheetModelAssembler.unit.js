@@ -24,9 +24,9 @@ describe('userSheetModelAssembler unit tests', () => {
     expect(model.sheetId).to.eql('A');
     expect(model.sheet.id).to.eql('A');
     expect(model.completions).to.eql([
-        { "handle": "@handleOne", "completed": false },
-        { "handle": "@handleTwo", "completed": false },
-        { "handle": "@handleX", "completed": false }
+      { 'handle': '@handleOne', 'completed': false },
+      { 'handle': '@handleTwo', 'completed': false },
+      { 'handle': '@handleX', 'completed': false }
     ]);
   });
 
