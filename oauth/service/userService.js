@@ -10,6 +10,7 @@ class UserService {
     this._userModelAssembler = options.userModelAssembler || userModelAssembler;
   }
 
+  // TODO: Move this to authenticator.js
   isAuthenticated(userId, token, tokenSecret) {
     console.info(`UserService.isAuthenticated(userId, ...): ${userId}`);
     if (!userId || !token || !tokenSecret) return Promise.resolve(false);
