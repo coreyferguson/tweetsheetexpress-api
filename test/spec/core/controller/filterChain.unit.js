@@ -4,6 +4,16 @@ const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('filterChain unit tests', () => {
 
+  const sandbox = sinon.sandbox.create();
+
+  before(() => {
+    sandbox.stub(console, 'info');
+  });
+
+  after(() => {
+    sandbox.restore();
+  });
+
   it('process all filters in chain', () => {
     let filterChain = new FilterChain({
       chain: [
