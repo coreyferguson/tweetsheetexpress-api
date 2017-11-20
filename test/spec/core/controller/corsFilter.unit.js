@@ -46,9 +46,9 @@ describe('corsFilter unit tests', () => {
       { headers: { origin: 'https://notmydomain.com' } },
       response
     ).then(shouldContinue => {
-      expect(shouldContinue).to.be.false;
+      expect(shouldContinue).to.be.true;
       expect(response).to.eql({
-        statusCode: 401,
+        statusCode: 200,
         headers: defaultHeaders
       });
     });

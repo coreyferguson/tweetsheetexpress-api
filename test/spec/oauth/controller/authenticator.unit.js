@@ -44,11 +44,12 @@ describe('authenticator unit tests', () => {
       httpMethod: 'GET',
       path: '/session',
       headers: {
-        Cookie: 'twitterUserId=881936187492941825; twitterTokenSecret=tokenSecretValue'
+        Cookie: 'twitterUserId=881936187492941825; twitterToken=tokenValue; twitterTokenSecret=tokenSecretValue'
       }
     };
     const model = {
       id: '881936187492941825',
+      token: 'tokenValue',
       tokenSecret: 'tokenSecretValue'
     };
     sandbox.stub(authenticator._userService, 'findOne')
