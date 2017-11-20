@@ -73,6 +73,7 @@ class SessionController {
     return this._twitterService
       .fetchAccessToken(twitterToken, cookieTokenSecret, twitterVerifier)
       .then(res => {
+        console.info('SessionController.callback(), fetchAccessToken res:', JSON.stringify(res));
         // save user to db
         return this._userService.findOne(res.user_id).then(user => {
           user = user || {};
@@ -86,8 +87,8 @@ class SessionController {
           response.statusCode = 302;
           response.headers = response.headers || {};
           response.headers['set-cookie'] = `${this._cookieProps.userIdLabel}=${res.user_id}; Domain=.${config.env.api.domain}; Secure`;
-          response.headers['sEt-cookie'] = `${this._cookieProps.tokenLabel}=${res.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
-          response.headers['Set-cookie'] = `${this._cookieProps.tokenSecretLabel}=${res.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.headers['Set-cookie'] = `${this._cookieProps.tokenLabel}=${res.oauth_token}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
+          response.headers['sEt-cookie'] = `${this._cookieProps.tokenSecretLabel}=${res.oauth_token_secret}; Domain=.${config.env.api.domain}; Secure; HttpOnly`;
           response.headers['location'] = redirectUrl;
         });
       });

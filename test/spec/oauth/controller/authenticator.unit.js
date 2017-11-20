@@ -77,4 +77,32 @@ describe('authenticator unit tests', () => {
     });
   });
 
+  describe('getToken', () => {
+
+    it('881936187492941825', () => {
+      expect(
+        authenticator.getToken({
+          headers: {
+            Cookie: 'tweetsheetsRedirectUrl=tweetsheetsRedirectUrlValue; '
+             + 'twitterToken=881936187492941825; '
+             + 'twitterTokenSecret=tokenSecretValue'
+          }
+        })
+      ).to.equal('881936187492941825');
+    });
+
+    it('881936187492941825-HcGGODHgN4bAfHDURwi0IDHxw0bcELS', () => {
+      expect(
+        authenticator.getToken({
+          headers: {
+            Cookie: 'tweetsheetsRedirectUrl=tweetsheetsRedirectUrlValue; '
+             + 'twitterToken=881936187492941825-HcGGODHgN4bAfHDURwi0IDHxw0bcELS; '
+             + 'twitterTokenSecret=tokenSecretValue'
+          }
+        })
+      ).to.equal('881936187492941825-HcGGODHgN4bAfHDURwi0IDHxw0bcELS');
+    });
+
+  });
+
 });

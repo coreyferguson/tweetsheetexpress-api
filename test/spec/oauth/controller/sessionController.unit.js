@@ -18,6 +18,10 @@ describe('sessionController unit tests', () => {
   const sandbox = sinon.sandbox.create();
   const controller = new SessionController();
 
+  beforeEach(() => {
+    sandbox.stub(console, 'info');
+  });
+
   afterEach(() => {
     sandbox.restore();
   });
@@ -37,8 +41,9 @@ describe('sessionController unit tests', () => {
     sandbox
       .stub(controller._twitterService, 'constructAuthorizeUrl')
       .returns('https://api.twitter.com/oauth/authorize?oauth_token=El7ndAAAAAAA1XxsAAABXR1UXZ8');
-    return controller.session(mockData['session-ftu-success']).then(response => {
-      const body = JSON.parse(response.body);
+    const response = {};
+    return controller.session(mockData['session-ftu-success'], response).then(() => {
+      const body = response.body;
       const headers = response.headers;
       expect(body.authorizationUrl)
         .to.startWith('https://api.twitter.com/oauth/authorize?oauth_token');
@@ -60,9 +65,9 @@ describe('sessionController unit tests', () => {
         user_id: '881936187492941825',
         screen_name: 'tweetsheetstest'
       }));
-    return controller.session(mockData['session-ftu-success']).then(response => {
-      const body = JSON.parse(response.body);
-      expect(body.authorized).to.be.true;
+    const response = {};
+    return controller.session(mockData['session-ftu-success'], response).then(() => {
+      expect(response.body.authorized).to.be.true;
     });
   });
 
@@ -81,12 +86,16 @@ describe('sessionController unit tests', () => {
     sandbox.stub(controller._userService, 'findOne')
       .returns(Promise.resolve(null));
     sandbox.stub(controller._userService, 'save');
-    return controller.callback(mockData['callback-request-success']).then(response => {
+    const response = {};
+    return controller.callback(mockData['callback-request-success'], response).then(() => {
       expect(response.headers).to.have.property(
         'set-cookie',
         `${cookieProps.userIdLabel}=881936187492941825; Domain=.tweetsheets-api-test.overattribution.com; Secure`);
       expect(response.headers).to.have.property(
         'Set-cookie',
+        `${cookieProps.tokenLabel}=881936187492941825-cyrgkZfPmDF6wU8GNkWShb4KEJlMyeb; Domain=.tweetsheets-api-test.overattribution.com; Secure; HttpOnly`);
+      expect(response.headers).to.have.property(
+        'sEt-cookie',
         `${cookieProps.tokenSecretLabel}=5rJlIxUiUpq1K4Sb8kZorWlY2R55EvtRLySxn7IuJ8lgj; Domain=.tweetsheets-api-test.overattribution.com; Secure; HttpOnly`);
     });
   });

@@ -31,7 +31,7 @@ class Authenticator {
     if (!event || !event.headers || !event.headers.Cookie) {
       return null;
     } else {
-      const regex = new RegExp(`${this._options.tokenLabel}=(\\w+)`);
+      const regex = new RegExp(`${this._options.tokenLabel}=([\\w\\-]+)`);
       const found = event.headers.Cookie.match(regex);
       if (!found || !found[1]) return null;
       else return found[1];
