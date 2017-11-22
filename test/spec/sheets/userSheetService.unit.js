@@ -1,7 +1,7 @@
 const path = require('path');
 const { expect, sinon } = require('../../support/TestUtils');
-const userSheetService = require('../../../sheets/service/userSheetService');
-const ymlParser = require('../../../core/ymlParser');
+const userSheetService = require('../../../src/sheets/service/userSheetService');
+const ymlParser = require('../../../src/core/ymlParser');
 
 // mock data
 const ymlToJson = fileName =>

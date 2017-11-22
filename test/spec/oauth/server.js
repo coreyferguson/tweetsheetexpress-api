@@ -1,6 +1,6 @@
 
 const express = require('express');
-const config = require('../../../config');
+const config = require('../../../src/config');
 
 class Server {
 

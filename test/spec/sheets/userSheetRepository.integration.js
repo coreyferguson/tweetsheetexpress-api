@@ -1,6 +1,6 @@
 
 const { expect } = require('../../support/TestUtils');
-const UserSheetRepository = require('../../../sheets/dao/userSheetRepository').UserSheetRepository;
+const UserSheetRepository = require('../../../src/sheets/dao/userSheetRepository').UserSheetRepository;
 const dynamodbLocal = require('../core/dynamodbLocal');
 
 describe('userSheetRepository integration tests', () => {

@@ -1,7 +1,7 @@
 
-const controller = require('../../../sheets/controller/sheetsController');
+const controller = require('../../../src/sheets/controller/sheetsController');
 const { expect, sinon } = require('../../support/TestUtils');
-const ymlParser = require('../../../core/ymlParser');
+const ymlParser = require('../../../src/core/ymlParser');
 const path = require('path');
 
 // mock data

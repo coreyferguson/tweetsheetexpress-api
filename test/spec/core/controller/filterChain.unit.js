@@ -1,5 +1,5 @@
 
-const { FilterChain } = require('../../../../core/controller/filterChain');
+const { FilterChain } = require('../../../../src/core/controller/filterChain');
 const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('filterChain unit tests', () => {

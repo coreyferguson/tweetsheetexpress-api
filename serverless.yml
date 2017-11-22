@@ -37,14 +37,14 @@ functions:
 
   # Session
   session:
-    handler: oauth/controller/lambda.session
+    handler: src/oauth/controller/lambda.session
     events:
       - http:
           method: GET
           path: session
           cors: true
   callback:
-    handler: oauth/controller/lambda.callback
+    handler: src/oauth/controller/lambda.callback
     events:
       - http:
           method: GET
@@ -60,7 +60,7 @@ functions:
           path: sheets
           cors: true
   getSheet:
-    handler: sheets/controller/lambda.findOne
+    handler: src/sheets/controller/lambda.findOne
     events:
       - http:
           method: GET
@@ -74,7 +74,7 @@ functions:
           path: sheets/csv
           cors: true
   tweetSheet:
-    handler: sheets/controller/lambda.tweet
+    handler: src/sheets/controller/lambda.tweet
     timeout: 15
     events:
       - http:
@@ -83,7 +83,7 @@ functions:
           cors: true
 
   tweetSheetPreflight:
-    handler: sheets/controller/lambda.tweetPreflight
+    handler: src/sheets/controller/lambda.tweetPreflight
     events:
       - http:
           method: OPTIONS

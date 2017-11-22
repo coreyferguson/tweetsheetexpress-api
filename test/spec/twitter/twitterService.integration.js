@@ -3,9 +3,9 @@ const bluebird = require('bluebird');
 const uuid = require('uuid/v4');
 const client = require('../oauth/client');
 const server = require('../oauth/server');
-const TwitterService = require('../../../twitter/service/twitterService').TwitterService;
+const TwitterService = require('../../../src/twitter/service/twitterService').TwitterService;
 const { expect } = require('../../support/TestUtils');
-const config = require('../../../config');
+const config = require('../../../src/config');
 
 /**
  * Tests end-to-end authorization with Twitter's 3-legged authorization.

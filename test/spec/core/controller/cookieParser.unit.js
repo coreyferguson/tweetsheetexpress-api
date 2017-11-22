@@ -1,5 +1,5 @@
 
-const cookieParser = require('../../../../core/controller/cookieParser');
+const cookieParser = require('../../../../src/core/controller/cookieParser');
 const { expect } = require('../../../support/TestUtils');
 
 describe('cookie parser unit tests', () => {

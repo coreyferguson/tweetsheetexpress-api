@@ -1,8 +1,8 @@
 
-const sheetService = require('../../../sheets/service/sheetService');
-const userSheetService = require('../../../sheets/service/userSheetService');
-const sheetRepository = require('../../../sheets/dao/sheetRepository');
-const userSheetRepository = require('../../../sheets/dao/userSheetRepository');
+const sheetService = require('../../../src/sheets/service/sheetService');
+const userSheetService = require('../../../src/sheets/service/userSheetService');
+const sheetRepository = require('../../../src/sheets/dao/sheetRepository');
+const userSheetRepository = require('../../../src/sheets/dao/userSheetRepository');
 const { expect, sinon } = require('../../support/TestUtils');
 const dynamodbLocal = require('../core/dynamodbLocal');
 

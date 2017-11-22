@@ -1,6 +1,6 @@
 
 const { expect, sinon } = require('../../support/TestUtils');
-const SheetRepository = require('../../../sheets/dao/sheetRepository').SheetRepository;
+const SheetRepository = require('../../../src/sheets/dao/sheetRepository').SheetRepository;
 const dynamodbLocal = require('../core/dynamodbLocal');
 
 describe('sheetRepository integration tests', () => {

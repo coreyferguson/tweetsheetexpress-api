@@ -1,5 +1,5 @@
 
-const assembler = require('../../../sheets/service/userSheetModelAssembler');
+const assembler = require('../../../src/sheets/service/userSheetModelAssembler');
 const { expect } = require('../../support/TestUtils');
 
 describe('userSheetModelAssembler unit tests', () => {

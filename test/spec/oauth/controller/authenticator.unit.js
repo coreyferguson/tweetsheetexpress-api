@@ -1,5 +1,5 @@
 
-const authenticator = require('../../../../oauth/controller/authenticator');
+const authenticator = require('../../../../src/oauth/controller/authenticator');
 const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('authenticator unit tests', () => {

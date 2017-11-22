@@ -1,5 +1,5 @@
 
-const corsFilter = require('../../../../core/controller/corsFilter');
+const corsFilter = require('../../../../src/core/controller/corsFilter');
 const { expect, sinon } = require('../../../support/TestUtils');
 
 describe('corsFilter unit tests', () => {

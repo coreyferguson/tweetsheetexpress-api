@@ -1,5 +1,5 @@
 
-const Config = require('../../../config').Config;
+const Config = require('../../../src/config/config').Config;
 const { expect } = require('../../support/TestUtils');
 
 describe('config unit tests', () => {

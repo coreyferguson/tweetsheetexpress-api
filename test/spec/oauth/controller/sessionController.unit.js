@@ -1,11 +1,11 @@
 
-const SessionController = require('../../../../oauth/controller/sessionController').SessionController;
+const SessionController = require('../../../../src/oauth/controller/sessionController').SessionController;
 const { expect, sinon } = require('../../../support/TestUtils');
-const ymlParser = require('../../../../core/ymlParser');
+const ymlParser = require('../../../../src/core/ymlParser');
 const path = require('path');
 
 const cookieProps = ymlParser.parse(
-  path.resolve(__dirname, '../../../../oauth/cookies.yml'));
+  path.resolve(__dirname, '../../../../src/oauth/cookies.yml'));
 
 const mockData = {
   'callback-request-success': require('./mock-data/callback-request-success.json'),

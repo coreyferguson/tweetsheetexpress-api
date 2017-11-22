@@ -1,6 +1,6 @@
 
 const { expect } = require('../../../support/TestUtils');
-const userModelAssembler = require('../../../../oauth/service/userModelAssembler');
+const userModelAssembler = require('../../../../src/oauth/service/userModelAssembler');
 
 describe('userModelAssembler unit tests', () => {
 

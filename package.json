@@ -6,9 +6,9 @@
   "scripts": {
     "deploy": "npm test && ./node_modules/.bin/sls deploy",
     "eslint": "./node_modules/.bin/eslint .",
-    "test": "npm run eslint && npm run testMocha",
-    "testMocha": "stage=test ./node_modules/.bin/mocha --recursive test/spec",
-    "testWatch": "stage=test ./node_modules/.bin/mocha --recursive --watch test/spec"
+    "pretest": "npm run eslint",
+    "test": "stage=test ./node_modules/.bin/mocha --recursive test/spec",
+    "watch": "stage=test ./node_modules/.bin/mocha --recursive --watch test/spec"
   },
   "repository": {
     "type": "git",

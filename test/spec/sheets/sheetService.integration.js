@@ -1,6 +1,6 @@
 
-const service = require('../../../sheets/service/sheetService');
-const repository = require('../../../sheets/dao/sheetRepository');
+const service = require('../../../src/sheets/service/sheetService');
+const repository = require('../../../src/sheets/dao/sheetRepository');
 const { expect, sinon } = require('../../support/TestUtils');
 const dynamodbLocal = require('../core/dynamodbLocal');
 

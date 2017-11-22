@@ -1,6 +1,6 @@
 
 const { expect, sinon } = require('../../../support/TestUtils');
-const UserRepository = require('../../../../oauth/dao/userRepository').UserRepository;
+const UserRepository = require('../../../../src/oauth/dao/userRepository').UserRepository;
 const dynamodbLocal = require('../../core/dynamodbLocal');
 
 describe('userRepository integration tests', () => {

@@ -1,5 +1,5 @@
 
-const assembler = require('../../../sheets/service/sheetModelAssembler');
+const assembler = require('../../../src/sheets/service/sheetModelAssembler');
 const { expect, sinon } = require('../../support/TestUtils');
 
 describe('sheetModelAssembler unit tests', () => {

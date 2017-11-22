@@ -1,6 +1,6 @@
 
-const userService = require('../../../../oauth/service/userService');
-const userRepository = require('../../../../oauth/dao/userRepository');
+const userService = require('../../../../src/oauth/service/userService');
+const userRepository = require('../../../../src/oauth/dao/userRepository');
 const { expect, sinon } = require('../../../support/TestUtils');
 const dynamodbLocal = require('../../core/dynamodbLocal');
 
