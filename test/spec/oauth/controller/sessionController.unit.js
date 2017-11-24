@@ -65,9 +65,13 @@ describe('sessionController unit tests', () => {
         user_id: '881936187492941825',
         screen_name: 'tweetsheetstest'
       }));
+    sandbox.stub(controller._userResourceAssembler, 'toResource')
+      .returns({ label: 'value' });
     const response = {};
     return controller.session(mockData['session-ftu-success'], response).then(() => {
       expect(response.body.authorized).to.be.true;
+      expect(response.body.user).to.not.be.undefined;
+      expect(response.body.user.label).to.be.equal('value');
     });
   });
 

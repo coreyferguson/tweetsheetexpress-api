@@ -3,6 +3,7 @@ const path = require('path');
 const authenticator = require('./authenticator');
 const cookieParser = require('../../core/controller/cookieParser');
 const twitterService = require('../../twitter/service/twitterService');
+const userResourceAssembler = require('./userResourceAssembler');
 const userService = require('../service/userService');
 const ymlParser = require('../../core/ymlParser');
 const config = require('../../config');
@@ -14,6 +15,7 @@ class SessionController {
     this._authenticator = options.authenticator || authenticator;
     this._cookieParser = options.cookieParser || cookieParser;
     this._twitterService = options.twitterService || twitterService;
+    this._userResourceAssembler = options.userResourceAssembler || userResourceAssembler;
     this._userService = options.userService || userService;
     this._cookieProps = ymlParser.parse(path.resolve(__dirname, '../cookies.yml'));
   }
@@ -33,7 +35,7 @@ class SessionController {
       if (user) {
         response.body = {
           authorized: true,
-          userId: user.id
+          user: this._userResourceAssembler.toResource(user)
         };
       } else {
         return this._twitterService.fetchRequestToken().then(token => {
