@@ -6,7 +6,7 @@ preprod:
       - https://tweetsheets-dev.overattribution.com
       - https://local.tweetsheets-dev.overattribution.com:3000
     batch:
-      size: 10
+      size: 5
       throttleDelayInSeconds: 240 # 4 minutes
 
 test:
