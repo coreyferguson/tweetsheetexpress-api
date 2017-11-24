@@ -1,8 +1,18 @@
 
 const assembler = require('../../../src/sheets/service/userSheetModelAssembler');
-const { expect } = require('../../support/TestUtils');
+const { expect, sinon } = require('../../support/TestUtils');
 
 describe('userSheetModelAssembler unit tests', () => {
+
+  let sandbox = sinon.sandbox.create();
+
+  beforeEach(() => {
+    sandbox.stub(console, 'info');
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   it('null sheetEntity throws error', () => {
     return expect(() => assembler.toModel(null, null))
