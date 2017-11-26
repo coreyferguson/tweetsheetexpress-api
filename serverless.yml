@@ -50,6 +50,13 @@ functions:
           method: GET
           path: callback
           cors: true
+  signOut:
+    handler: src/oauth/controller/lambda.signOut
+    events:
+      - http:
+          method: GET
+          path: signOut
+          cors: true
 
   # Sheets
   postSheet:

@@ -96,6 +96,16 @@ class SessionController {
       });
   }
 
+  signOut(event, response) {
+    response.statusCode = 200;
+    response.headers = response.headers || {};
+    const now = new Date();
+    const expiration = now.toUTCString();
+    response.headers['set-cookie'] = `${this._cookieProps.userIdLabel}=; Domain=.${config.env.api.domain}; Secure; Expires=${expiration}`;
+    response.headers['Set-cookie'] = `${this._cookieProps.tokenLabel}=; Domain=.${config.env.api.domain}; Secure; HttpOnly; Expires=${expiration}`;
+    response.headers['sEt-cookie'] = `${this._cookieProps.tokenSecretLabel}=; Domain=.${config.env.api.domain}; Secure; HttpOnly; Expires=${expiration}`;
+  }
+
 }
 
 // export singleton
